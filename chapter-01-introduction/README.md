@@ -1,3 +1,5 @@
+# Chapter 1 — Introduction to Dart
+
 ## ⚡ Blitz Overview
 
 ### 🧩 What is Dart?
@@ -35,17 +37,16 @@ Every Dart application starts from the `main` function:
 ```dart
 void main() {
   print('Hello world!');
-}
-```
+}```
 
 ---
 
 ### 🏷️ Naming Conventions
-- lowerCamelCase — variables, functions, and methods
-- UpperCamelCase — classes
-- Names cannot start with digits
-- Dart is case-sensitive: name and NAME are different identifiers
-- Names starting with _ are private to the library
+- `lowerCamelCase` — variables, functions, and methods
+- `UpperCamelCase` — classes
+- Names cannot start with `digits`
+- Dart is case-sensitive: `name` and `NAME` are different identifiers
+- Names starting with `_` are private to the library
 
 ---
 

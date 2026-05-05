@@ -21,7 +21,7 @@ It is useful for:
 
 Chapters will be added progressively:
 
-- [Chapter 1 — Introduction](./ch1/README.md)
+- [Chapter 1 — Introduction](./chapter-01-introduction/README.md)
 
 *(More chapters coming soon)*
 
