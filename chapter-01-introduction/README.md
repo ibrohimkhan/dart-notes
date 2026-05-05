@@ -296,5 +296,280 @@ print(bob.isEmpty);     // true
 print(bob.isNotEmpty);  // false
 ```
 
->📝 Note: 
->Most string operations return a **new string**, because strings are immutable.
+> 📝 Note: Most string operations return a **new string**, because strings are immutable.
+
+##№ 🧠 Key Takeaways
+
+- Dart is statically typed with type inference (`var`)
+- Strings are immutable
+- String operations return new values
+- Interpolation is preferred over concatenation
+
+---
+
+### 🔣 Runes & Symbols
+
+`Runes` represent Unicode code points of a string.
+
+Dart strings are based on UTF-16, which means some characters (like emojis) may take more than one position in a string.
+
+Example:
+
+```dart
+var emoji = '😊';
+
+print(emoji.length); // 2 ❗
+print(emoji.runes);  // (128522)
+```
+
+You can also inspect all characters:
+
+```dart
+var text = 'A😊';
+print(text.runes); // (65, 128522)
+```
+
+> 💡 Use `Runes` when working with Unicode characters or emojis.
+
+A `Symbol` represents the name of an identifier as an object.
+
+```dart
+var mySymbol = #myAPI;
+print(mySymbol); // Symbol("myAPI")
+```
+
+Symbols are mainly used for reflection and advanced API usage.
+
+> ⚠️ In modern Dart (especially Flutter), Symbol is rarely used.
+
+---
+
+### Boolean
+
+In Dart, the `bool` type can have only two values: `true` or `false`.
+
+```dart
+bool canWrite = false;
+var canRead = true;
+```
+
+---
+
+### 📋 List
+A `List` is an ordered collection of objects.
+
+Unlike strings, lists are mutable — you can change their elements by index or by using built-in list methods.
+
+This makes lists a flexible tool for storing collections of data, such as:
+- items in a shopping list  
+- tasks for the day  
+- any group of related objects
+
+### 📌 Important
+
+A `List` in Dart is ordered and indexed starting from 0.
+
+#### `List` declaration
+
+```dart
+List<int> numbers = [1, 2, 3, 4, 5];
+var nums = [1, 2, 3];
+var emptyList = <int>[];
+
+var nums2 = List<int>.from(nums.reversed); // [3, 2, 1]
+
+var isChecked = true;
+var items = [
+  'Item 1',
+  'Item 2',
+  'Item 3',
+  if (isChecked) 'Item 4',
+];
+
+print(items); // [Item 1, Item 2, Item 3, Item 4]
+
+var numberedItems = [
+  for (var i in items) '#$i',
+];
+
+print(numberedItems); // [#Item 1, #Item 2, #Item 3, #Item 4]
+```
+
+#### Change the list item
+
+```dart
+var nums = [1, 2, 3];
+nums[0] = 10;
+print(nums); // [10, 2, 3]
+```
+
+> ⚠️ A `List` is strongly typed. All elements must be of the same type.
+```dart
+var nums = [1, 2, 3];
+nums[0] = 1.7; // ❌ Error: A value of type 'double' can't be assigned to a variable of type 'int'.
+```
+
+#### 🔒 Immutability
+```dart
+var nums = const [1, 2, 3];
+var items = List.unmodifiable([4, 5, 6]);
+
+nums[0] = 11;  // ❌ Unsupported operation: Cannot modify an unmodifiable list
+items[0] = 44; // ❌ Unsupported operation: Cannot modify an unmodifiable list
+```
+
+#### Add items into the List
+
+```dart
+var nums = [1, 2, 3];
+
+var nums2 = <int>[0, ...nums];
+print(nums2); // [0, 1, 2, 3]
+
+nums2 += [4, 5];
+print(nums2); // [0, 1, 2, 3, 4, 5]
+```
+
+#### 📏 Length
+
+You can get the length of a list using the `length` property:
+
+```dart
+var nums = [1, 2, 3];
+print(nums.length); // 3
+```
+
+#### 🔧 List operations
+- add(value)
+- addAll([item1, item2, item3])
+- insert(index, value)
+- insertAll(index, [item1, item2, item3])
+- removeAt(index)
+- remove(firstItem)
+- removeLast()
+- removeRange(start, endNotInclusive)
+- clear()
+- removeWhere((element) => condition) => [1, 2, 3, 4, 5].removeWhere((x) => x % 2 == 0); // [1, 3, 5]
+- setAll(index, [item1, item2, item3]) => [1, 2, 3, 4, 5].setAll(0, [10, 20, 30]); // [10, 20, 30, 4, 5]
+- replaceRange(start, end, [item1, item2]) => [1, 2, 3, 4, 5].replaceRange(3, 5, [40, 50]); // [1, 2, 3, 40, 50]
+- fillRange(start, end, value) => [1, 2, 3, 4, 5].fillRange(1, 4, 0); // [1, 0, 0, 0, 5]
+- join() => [1, 2, 3].join(); // 123
+- join(sep) => [1, 2, 3].join('-'); // 1-2-3
+- first => [1, 2, 3].first  // 1
+- last => [1, 2, 3].last    // 3
+- isEmpty => [1, 2, 3].isEmpty  // false
+- isNotEmpty => [].isNotEmpty   // false
+- sublist(start) => [1, 2, 3, 4, 5, 6].sublist(2); // [3, 4, 5, 6]
+- sublist(start, end) => [1, 2, 3, 4, 5, 6].sublist(2, 4); // [3, 4]
+- shuffle() - mutates the list by shuffling the elements
+- sort() - mutates the list by ascending sorting the elements
+
+#### 🔍 contains
+
+```dart
+var items = <int>[1, 2, 3, 4];
+print(items.contains(4)); // true
+```
+
+#### 📍 indexOf / lastIndexOf / any
+
+`int indexOf(element, start)` - returns the index of the element in the list, start is a starting position to search element in the list. If the element is not found returns -1. 
+
+```dart
+var items = <int>[1, 2, 3, 4];
+print(items.indexOf(3)); // 2
+print(items.indexOf(3, 3)); // -1
+print(items.lastIndexOf(4)); // 3
+
+print(items.indexWhere((element) => element > 3)); // 3
+
+items = <int>[1, 2, 1, 3, 4, 8, 3];
+print(items.firstWhere((x) => x % 2 == 0)); // 2
+print(items.lastWhere((x) => x % 2 == 0));  // 8
+
+items = <int>[1, 2, 3, 4, 5];
+print(items.any((x) => x % 2 == 0)); // true
+```
+
+#### 🔍 where
+
+```dart
+var items = <int>[1, 2, 3, 4, 1, 3, 4, 1];
+var countOnes = items.where((x) => x == 1).length;
+print(countOnes); // 3
+```
+
+#### 🔄 map
+
+```dart
+var items = <int>[1, 2, 3, 4];
+var doubled = items.map((x) => x * 2).toList();
+print(doubled); // [2, 4, 6, 8]
+```
+
+#### ➕ reduce
+
+```dart
+var nums = <int>[1, 2, 3, 4, 5];
+var sum = nums.reduce((value, element) => value + element);
+print(sum); // 15
+```
+
+#### `List` is a reference type
+
+```dart
+var num1 = [1, 2];
+var num2 = num1;
+
+num2.add(3);
+num1.add(4);
+
+print(num1); // [1, 2, 3, 4]
+print(num2); // [1, 2, 3, 4]
+
+var num3 = List.from(num1);
+num3.add(5);
+
+print(num1); // [1, 2, 3, 4]
+print(num3); // [1, 2, 3, 4, 5]
+
+num1 = [1, 2];
+num2 = [...num1];
+num2.add(3);
+
+print(num1); // [1, 2]
+print(num2); // [1, 2, 3]
+
+num1 = [1, 2];
+num2 = []..addAll(num1);
+num2.add(3);
+
+print(num1); // [1, 2]
+print(num2); // [1, 2, 3]
+```
+
+### 🧠 Key Takeaways
+
+- Lists are ordered and mutable
+- Lists are strongly typed
+- Lists support powerful functional operations like `map`, `where`, and `reduce`
+- Lists are reference types
+
+---
+
+### Set
+
+
+---
+
+### Map
+
+
+---
+
+### Record
+
+
+---
+
+### Null
