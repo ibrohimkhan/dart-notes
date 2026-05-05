@@ -298,7 +298,7 @@ print(bob.isNotEmpty);  // false
 
 > 📝 Note: Most string operations return a **new string**, because strings are immutable.
 
-##№ 🧠 Key Takeaways
+### 🧠 Key Takeaways
 
 - Dart is statically typed with type inference (`var`)
 - Strings are immutable
