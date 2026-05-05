@@ -559,8 +559,138 @@ print(num2); // [1, 2, 3]
 
 ---
 
-### Set
+### 🔸 Set
 
+A `Set` is an unordered collection of unique elements.
+
+- All elements must be of the same type
+- Duplicate values are not allowed  
+
+Sets are commonly used to:
+- remove duplicates  
+- check if an element exists  
+
+> 💡 Sets in Dart are unordered — element order is not guaranted.
+
+Like other types, a `Set` can be declared explicitly or using type inference.
+
+```dart
+var nums = {1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
+print(nums); // {1, 2, 3, 4, 5, 6, 7}
+
+Set nums2 = {1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
+print(nums2); // {1, 2, 3, 4, 5, 6, 7}
+
+var emptySet = <int>{};
+print(emptySet); // {}
+
+var listItems = [1, 2, 3, 4, 2, 1, 1, 3, 2];
+var uniqueItems = Set.from(listItems).toList();
+print(uniqueItems); // [1, 2, 3, 4]
+
+listItems = [1, 1, 2, 3, 2, 4, 5, 4, 6, 6, 6];
+var setElements = {
+  for (var i in listItems) if (i % 2 == 0) i
+};
+
+print(setElements); // {2, 4, 6}
+```
+
+#### 🔒 Immutability
+
+```dart
+var nums = const {1, 2, 3, 4};
+var nums2 = Set.unmodifiable([1, 2, 3, 4, 5]);
+```
+
+#### ⚠️ Invalid operations
+
+```dart
+var wrongSet = const {1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 7}; // ❌ Error: Constant evaluation error: Context: The element '1' conflicts with another existing element in the set.
+
+var items = {1, 2, 3, 4};
+items[0] = 2; // ❌ Error: The operator '[]=' isn't defined for the type 'Set<int>'.
+```
+
+#### 📏 length / first / last / isEmpty / isNotEmpty
+
+```dart
+var nums = {1, 2, 3};
+print(nums.length); // 3
+
+print(nums.first);  // 1
+print(nums.last);   // 3
+
+print(nums.isEmpty);    // false
+print(nums.isNotEmpty); // true
+```
+
+#### 🔧 Set operations
+- bool add(value)
+- void addAll([item1, item2, item3])
+- bool remove(value)
+- void removeAll([item1, item2])
+- void removeWhere((element) => condition)
+- void clear()
+
+#### 🔍 where / firstWhere / lastWhere
+
+```dart
+final numbers = <int>{1, 2, 3, 5, 6, 7};
+
+var result = numbers.where((x) => x < 5);
+print(result); // (1, 2, 3)
+
+result = numbers.where((x) => x > 5);
+print(result); // (6, 7)
+
+result = numbers.where((x) => x.isEven);
+print(result); // (2, 6)
+
+var resultInt = numbers.firstWhere((element) => element < 5);
+print(resultInt); // 1
+
+resultInt = numbers.firstWhere((element) => element > 5);
+print(resultInt); // 6
+
+resultInt = numbers.firstWhere((element) => element > 10, orElse: () => -1 );
+print(resultInt); // -1
+
+resultInt = numbers.lastWhere((element) => element < 5);
+print(resultInt); // 3
+
+resultInt = numbers.lastWhere((element) => element > 5);
+print(resultInt); // 7
+
+resultInt = numbers.lastWhere((element) => element > 10, orElse: () => -1);
+print(resultInt); // -1
+```
+
+#### 🔗 union / difference / intersection
+These operations create a new set and do not modify the original one.
+
+```dart
+var items1 = {1, 2, 3, 4, 5, 6};
+var items2 = {4, 5, 6, 7, 8, 9};
+
+print(items1.union(items2));        // {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+print(items1.difference(items2));   // {1, 2, 3}
+print(items2.difference(items1));   // {7, 8, 9}
+
+print(items1.intersection(items2)); // {4, 5, 6}
+```
+
+
+#### 🔍 contains / containsAll
+```dart
+var items = {1, 2, 3};
+print(items.contains(2)); // true
+print(items.contains(5)); // false
+
+print(items.containsAll({2, 3})); // true
+print(items.containsAll({1, 5})); // false
+```
 
 ---
 
