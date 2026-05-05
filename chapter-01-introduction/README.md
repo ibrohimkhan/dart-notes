@@ -37,7 +37,8 @@ Every Dart application starts from the `main` function:
 ```dart
 void main() {
   print('Hello world!');
-}```
+}
+```
 
 ---
 
