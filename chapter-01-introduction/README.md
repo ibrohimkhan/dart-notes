@@ -99,7 +99,7 @@ num a = 5.7;
 a = 5; // becomes 5
 ```
 
-## Operations with numbers
+#### Operations with numbers
 ```dart
 void main() {
   print((-3).abs());  // 3
@@ -161,7 +161,7 @@ var name = 'bob';
 print(name.length); // 3
 ```
 
-### 🔧 String operations
+#### 🔧 String operations
 
 #### ➕ Concatenation
 You can use `+` to concatenate strings
@@ -275,5 +275,5 @@ print(bob.isEmpty);     // true
 print(bob.isNotEmpty);  // false
 ```
 
->📝 Note
+>📝 Note: 
 >Most string operations return a **new string**, because strings are immutable.
