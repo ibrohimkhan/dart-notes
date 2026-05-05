@@ -169,7 +169,7 @@ var name = 'bob';
 print(name.length); // 3
 ```
 
-#### 🔧 String operations
+#### 🔧 String Operations
 
 #### ➕ Concatenation
 
@@ -441,7 +441,7 @@ var nums = [1, 2, 3];
 print(nums.length); // 3
 ```
 
-#### 🔧 List operations
+#### 🔧 List Operations
 - add(value)
 - addAll([item1, item2, item3])
 - insert(index, value)
@@ -570,9 +570,9 @@ Sets are commonly used to:
 - remove duplicates  
 - check if an element exists  
 
-> 💡 Sets in Dart are unordered — element order is not guaranted.
+> 💡 Sets in Dart are unordered — element order is not guaranteed.
 
-Like other types, a `Set` can be declared explicitly or using type inference.
+A `Set` can be declared explicitly or using type inference.
 
 ```dart
 var nums = {1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
@@ -603,7 +603,7 @@ var nums = const {1, 2, 3, 4};
 var nums2 = Set.unmodifiable([1, 2, 3, 4, 5]);
 ```
 
-#### ⚠️ Invalid operations
+#### ⚠️ Invalid Operations
 
 ```dart
 var wrongSet = const {1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 7}; // ❌ Error: Constant evaluation error: Context: The element '1' conflicts with another existing element in the set.
@@ -613,6 +613,8 @@ items[0] = 2; // ❌ Error: The operator '[]=' isn't defined for the type 'Set<i
 ```
 
 #### 📏 length / first / last / isEmpty / isNotEmpty
+
+> ⚠️ Even though you can use `first` and `last`, Sets are unordered, so the result may not be predictable.
 
 ```dart
 var nums = {1, 2, 3};
@@ -625,7 +627,7 @@ print(nums.isEmpty);    // false
 print(nums.isNotEmpty); // true
 ```
 
-#### 🔧 Set operations
+#### 🔧 Set Operations
 - bool add(value)
 - void addAll([item1, item2, item3])
 - bool remove(value)
@@ -691,6 +693,16 @@ print(items.contains(5)); // false
 print(items.containsAll({2, 3})); // true
 print(items.containsAll({1, 5})); // false
 ```
+
+### 🧠 Key Takeaways
+
+- A `Set` is an unordered collection of unique elements  
+- Duplicate values are automatically removed  
+- Sets are strongly typed — all elements must be of the same type  
+- Sets are useful for removing duplicates and checking membership  
+- Sets do not guarantee element order  
+- Operations like `union`, `difference`, and `intersection` return new sets  
+- Use `.toSet()` to convert a `List` into a `Set`
 
 ---
 
