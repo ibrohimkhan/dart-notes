@@ -344,7 +344,7 @@ Symbols are mainly used for reflection and advanced API usage.
 
 ---
 
-### Boolean
+### 🔘 Boolean
 
 In Dart, the `bool` type can have only two values: `true` or `false`.
 
@@ -358,6 +358,8 @@ var canRead = true;
 ### 📋 List
 A `List` is an ordered collection of objects.
 
+> 💡 Lists in Dart are zero-indexed (first element has index 0).
+
 Unlike strings, lists are mutable — you can change their elements by index or by using built-in list methods.
 
 This makes lists a flexible tool for storing collections of data, such as:
@@ -369,7 +371,7 @@ This makes lists a flexible tool for storing collections of data, such as:
 
 A `List` in Dart is ordered and indexed starting from 0.
 
-#### `List` declaration
+#### 🏗️ `List` declaration
 
 ```dart
 List<int> numbers = [1, 2, 3, 4, 5];
@@ -395,7 +397,7 @@ var numberedItems = [
 print(numberedItems); // [#Item 1, #Item 2, #Item 3, #Item 4]
 ```
 
-#### Change the list item
+#### ✏️ Modify List Items
 
 ```dart
 var nums = [1, 2, 3];
@@ -418,7 +420,7 @@ nums[0] = 11;  // ❌ Unsupported operation: Cannot modify an unmodifiable list
 items[0] = 44; // ❌ Unsupported operation: Cannot modify an unmodifiable list
 ```
 
-#### Add items into the List
+#### ➕ Add items into the List
 
 ```dart
 var nums = [1, 2, 3];
@@ -515,7 +517,7 @@ var sum = nums.reduce((value, element) => value + element);
 print(sum); // 15
 ```
 
-#### `List` is a reference type
+#### 🔗 `List` is a reference type
 
 ```dart
 var num1 = [1, 2];
