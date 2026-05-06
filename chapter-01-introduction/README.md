@@ -939,8 +939,178 @@ for (var entry in students.entries) {
 
 ---
 
-### Record
+### 🧩 Records
 
+A `Record` is a way to group multiple values into a single object without creating a class.
+
+Records are:
+- anonymous
+- immutable
+- aggregate data type
+- fixed-size  
+- can store values of different types
+- typed
+
+> 💡 `Records` are values that can be stored in variables, passed to and from functions, and stored in data structures such as lists, maps, and sets.
+
+#### 🏗️ Records declaration
+
+```dart
+var user = ('Alice', 25);
+print(user);    // (Alice, 25)
+print(user.$1); // Alice
+print(user.$2); // 25
+
+(String, int) user2 = ('Bob', 30);
+print(user2);    // (Bob, 30)
+print(user2.$1); // Bob
+print(user2.$2); // 30
+
+// ❌ Error: A value of type '(int, String)' can't be assigned to a variable of type '(String, int)'.
+(String, int) bob = (30, 'Bob');
+
+// ❌ Error: A value of type 'int' can't be assigned to a variable of type '(int)'.
+(int) value = (42);
+
+// A single-value record requires a trailing comma
+(int,) value1 = (42,);
+print(value1);              // (42)
+print(value1.runtimeType);  // (int)
+
+// Without a trailing comma, this is just an int
+var value2 = (42);
+print(value2);              // 42
+print(value2.runtimeType);  // int
+```
+
+#### 🔢 Record fields
+
+Records can contain two types of fields:
+
+- Positional - Accessed by position
+- Named - Accessed by name
+
+```dart
+var user = ('Alice', 25);
+
+print(user.$1); // Alice
+print(user.$2); // 25
+
+var user2 = (name: 'Alice', age: 25);
+
+print(user2.name); // Alice
+print(user2.age);  // 25
+```
+
+#### 🔀 Mixed fields
+
+Records can combine positional and named fields:
+
+```dart
+var user = ('Alice', age: 25);
+
+print(user.$1);  // Alice
+print(user.age); // 25
+
+(int, {String name}) user2 = (40, name: 'Charlie');
+print(user2);       // (40, name: Charlie)
+print(user2.$1);    // 40
+print(user2.name);  // Charlie
+
+(int, {String name}) user3 = (name: 'Eva', 30);
+print(user3);       // (30, name: Eva)
+print(user3.$1);    // 30
+print(user3.name);  // Eva
+```
+
+> 💡 Record syntax rule in type definition: positional fields come first, named fields go last.
+
+```dart
+// {String name}, int) ❌
+({String name}, int) user = (name: 'Charlie', 35); // ❌
+
+// (int, {String name}) ✅
+(int, {String name}) user2 = (name: 'Eva', 30); // ✅
+// or
+(int, {String name}) user2 = (30, name: 'Eva'); // ✅ recommended
+```
+
+> 💡 In Dart Records, named fields can appear in any order, while positional values are matched by their position.
+
+#### 💡 Notes
+- Positional fields are ordered
+- Named fields are accessed by name
+- Records are immutable
+
+#### ⚖️ Record Equality
+
+Records are compared by value, not by reference.
+
+Two records are equal if all their fields are equal.
+
+```dart
+var a = ('Alice', 25);
+var b = ('Alice', 25);
+
+print(a == b); // true
+```
+
+- 🔢 Order matters:
+  ```dart
+  var a = ('Alice', 25);
+  var b = (25, 'Alice');
+
+  print(a == b); // false
+  ```
+- 🏷️ Names and values must match:
+  ```dart
+  var a = (name: 'Alice', age: 25);
+  var b = (name: 'Alice', age: 25);
+
+  print(a == b); // true
+  ```
+- ⚠️ Mixed cases
+  ```dart
+  var a = ('Alice', age: 25);
+  var b = ('Alice', age: 25);
+
+  print(a == b); // true
+  ```
+
+> 💡 Important
+> - Records use value equality
+> - Positional fields depend on order
+> - Named fields depend on names and values
+
+
+#### 📦 Record Destructuring
+
+Record destructuring allows you to unpack record values into separate variables.
+
+```dart
+// destructuring positional fields
+var user = ('Alice', 25);
+var (name, age) = user;
+
+print(name);  // Alice
+print(age);   // 25
+
+// destructuring named fields
+var user2 = (name2: 'Alice', age2: 25);
+var (:name2, :age2) = user2;
+
+print(name2); // Alice
+print(age2);  // 25
+
+// destructuring mixed fields
+var user3 = ('Alice', age: 25);
+var (name3, age: userAge) = user3;
+
+print(name3);   // Alice
+print(userAge); // 25
+```
+
+> 💡 Destructuring makes code shorter and easier to read when working with Records.
 
 ---
 
