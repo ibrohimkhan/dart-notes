@@ -50,4 +50,4 @@ The focus is on **clarity, simplicity, and real understanding**, not unnecessary
 
 ## 🚀 Status
 
-📖 In progress — actively learning and expanding the repository.
+📖 In progress — new chapters are being added progressively.
