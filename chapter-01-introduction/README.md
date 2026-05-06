@@ -464,49 +464,49 @@ print(nums.isNotEmpty); // true
 ```
 
 #### 🔧 List Operations
-- void add(value)
-- void addAll([item1, item2, item3])
-- void insert(index, value)
-- void insertAll(index, [item1, item2, item3])
-- E removeAt(index)
-- bool remove(firstItem)
-- E removeLast()
-- void removeRange(start, endNotInclusive)
-- void clear()
-- void removeWhere((element) => condition)
+- `void add(value)`
+- `void addAll([item1, item2, item3])`
+- `void insert(index, value)`
+- `void insertAll(index, [item1, item2, item3])`
+- `E removeAt(index)`
+- `bool remove(firstItem)`
+- `E removeLast()`
+- `void removeRange(start, endNotInclusive)`
+- `void clear()`
+- `void removeWhere((element) => condition)`
   ```dart
   [1, 2, 3, 4, 5].removeWhere((x) => x % 2 == 0); // [1, 3, 5]
   ```
-- void setAll(index, [item1, item2, item3]) 
+- `void setAll(index, [item1, item2, item3])`
   ```dart
   [1, 2, 3, 4, 5].setAll(0, [10, 20, 30]); // [10, 20, 30, 4, 5]
   ```
-- void replaceRange(start, end, [item1, item2])
+- `void replaceRange(start, end, [item1, item2])`
   ```dart
   [1, 2, 3, 4, 5].replaceRange(3, 5, [40, 50]); // [1, 2, 3, 40, 50]
   ```
-- void fillRange(start, end, value)
+- `void fillRange(start, end, value)`
   ```dart
   [1, 2, 3, 4, 5].fillRange(1, 4, 0); // [1, 0, 0, 0, 5]
   ```
-- String join()
+- `String join()`
   ```dart
   print([1, 2, 3].join()); // 123
   ```
-- String join(sep)
+- `String join(sep)`
   ```dart
   print([1, 2, 3].join('-')); // 1-2-3
   ```
-- List<E> sublist(start)
+- `List<E> sublist(start)`
   ```dart
   print([1, 2, 3, 4, 5, 6].sublist(2)); // [3, 4, 5, 6]
   ```
-- List<E> sublist(start, end)
+- `List<E> sublist(start, end)`
   ```dart
   print([1, 2, 3, 4, 5, 6].sublist(2, 4)); // [3, 4]
   ```
-- void shuffle() - mutates the list by shuffling the elements
-- void sort() - mutates the list by ascending sorting the elements
+- `void shuffle()` - mutates the list by shuffling the elements
+- `void sort()`    - mutates the list by ascending sorting the elements
 
 #### 🔍 contains
 
