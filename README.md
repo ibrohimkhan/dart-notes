@@ -21,7 +21,7 @@ It is useful for:
 
 Chapters will be added progressively:
 
-- [Chapter 1 — Introduction](./chapter-01-introduction_and_data_types/README.md)
+- [Chapter 1 — Introduction to Dart and Built-in Data Types](./chapter-01-introduction_and_data_types/README.md)
 
 *(More chapters coming soon)*
 
