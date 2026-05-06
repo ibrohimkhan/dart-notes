@@ -1055,7 +1055,7 @@ var b = ('Alice', 25);
 print(a == b); // true
 ```
 
-🔢 Order matters:
+🔢 Order matters
 ```dart
 var a = ('Alice', 25);
 var b = (25, 'Alice');
@@ -1063,7 +1063,7 @@ var b = (25, 'Alice');
 print(a == b); // false
 ```
 
-🏷️ Names and values must match:
+🏷️ Names and values must match
 ```dart
 var a = (name: 'Alice', age: 25);
 var b = (name: 'Alice', age: 25);
@@ -1113,6 +1113,17 @@ print(userAge); // 25
 ```
 
 > 💡 Destructuring makes code shorter and easier to read when working with Records.
+
+#### 🧠 Key Takeaways
+
+- A `Record` groups multiple values into a single object without creating a class  
+- Records are immutable, fixed-size, and can hold values of different types  
+- Records can have positional fields (`$1`, `$2`, ...) and named fields (`.name`)  
+- Positional fields are ordered; named fields are accessed by name  
+- In type definitions, positional fields come first, named fields go last  
+- Records use value equality (not reference equality)  
+- Records are useful for returning multiple values from functions  
+- Destructuring allows you to unpack records into variables  
 
 ---
 
