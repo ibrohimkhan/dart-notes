@@ -1,18 +1,13 @@
 void main() {
-  var students = {'Alice': 85, 'Bob': 90};
+  var nums = List<int>.filled(3, 0);
+  print(nums); // [0, 0, 0] 
 
-  // keys
-  for (var key in students.keys) {
-    print(key);
-  }
+  nums[1] = 1;
+  print(nums); // [0, 1, 0]
 
-  // values
-  for (var value in students.values) {
-    print(value);
-  }
+  nums.add(4); // Unsupported operation: Cannot add to a fixed-length list
+  print(nums); // [0, 1, 0, 4]
 
-  // entries
-  for (var entry in students.entries) {
-    print('${entry.key}: ${entry.value}');
-  }
+  nums[3] = 2; // RangeError (index): Invalid value: Not in inclusive range 0..2: 3
+  print(nums);
 }

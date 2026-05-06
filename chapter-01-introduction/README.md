@@ -397,6 +397,24 @@ var numberedItems = [
 print(numberedItems); // [#Item 1, #Item 2, #Item 3, #Item 4]
 ```
 
+#### 📏 Fixed-length List
+
+> 💡 A fixed-length list has a fixed size — you cannot add or remove elements.
+
+```dart
+var nums = List<int>.filled(3, 0); // fixed-length list
+print(nums); // [0, 0, 0] 
+
+nums[1] = 1;
+print(nums); // [0, 1, 0]
+
+// ❌ Not allowed operations
+nums.add(4); // Unsupported operation: Cannot add to a fixed-length list
+nums[3] = 2; // RangeError (index): Invalid value: Not in inclusive range 0..2: 3
+```
+
+> 💡 Use growable lists in most cases. Fixed-length lists are useful when the size must stay constant.
+
 #### ✏️ Modify List Items
 
 ```dart
@@ -432,7 +450,7 @@ nums2 += [4, 5];
 print(nums2); // [0, 1, 2, 3, 4, 5]
 ```
 
-#### 📏 length / first / last / isEmpty / isNotEmpty
+#### 📏  Properties
 
 ```dart
 var nums = [1, 2, 3];
@@ -636,7 +654,7 @@ var items = {1, 2, 3, 4};
 items[0] = 2; // ❌ Error: The operator '[]=' isn't defined for the type 'Set<int>'.
 ```
 
-#### 📏 length / first / last / isEmpty / isNotEmpty
+#### 📏  Properties
 
 > ⚠️ Even though you can use `first` and `last`, Sets are unordered, so the result may not be predictable.
 
