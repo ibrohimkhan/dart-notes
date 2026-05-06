@@ -730,8 +730,194 @@ print(items.containsAll({1, 5})); // false
 
 ---
 
-### Map
+### 🗺️ Map
 
+A `Map` is a collection of key-value pairs.
+
+Each key is unique and is used to access its corresponding value.
+
+- Keys cannot be duplicated  
+- Values can be duplicated  
+
+Both keys and values can be of any data type.
+
+In simple terms, a `Map` stores data in the form of: `key -> value`
+
+> 💡 A `Map` is similar to a dictionary in other programming languages.
+
+#### 🏗️ `Map` declaration
+
+```dart
+var user = <String, String>{
+  'name': 'Alice',
+  'email': 'alice@example.com'
+};
+
+print(user);          // {name: Alice, email: alice@example.com}
+print(user['name']);  // Alice
+print(user['email']); // alice@example.com
+
+var students = <int, String> {
+  1: 'Alice', 
+  2: 'Bob', 
+  3: 'Charlie'
+};
+print(students);  // {1: Alice, 2: Bob, 3: Charlie}
+
+var emptyMap1 = Map<String, int>(); // {} - empty map
+var emptyMap2 = <String, int>{};    // {} - empty map
+
+// creating a map from two lists
+var keys = [1, 2, 3];
+var values = ['one', 'two', 'three'];
+
+var map = Map.fromIterables(keys, values);
+
+print(map); // {1: one, 2: two, 3: three}
+```
+
+#### ✏️ Modify Map Elements
+
+```dart
+var students = <String, int> {
+  'Alice': 85,
+  'Bob': 52,
+  'Charlie': 78,
+};
+
+print(students); // {Alice: 85, Bob: 52, Charlie: 78}
+
+students['Bob'] = 95; // Update Bob's score
+print(students); // {Alice: 85, Bob: 95, Charlie: 78}
+
+students['David'] = 88; // Add a new student
+print(students); // {Alice: 85, Bob: 95, Charlie: 78, David: 88}
+```
+
+#### 🔑 Access Value by Key
+
+You can access a value in a `Map` using its key.
+
+If the key does not exist, it returns `null`.
+
+```dart
+var students = <int, String> {
+  1: 'Alice', 
+  2: 'Bob', 
+  3: 'Charlie'
+};
+print(students[1]); // Alice
+print(students[4]); // null
+```
+
+> ⚠️ The return type is nullable, so you should handle `null` if needed.
+
+> 💡 Use `containsKey()` to check if a key exists before accessing it.
+
+#### 📏 Properties & Helpers
+
+```dart
+var students = <int, String> {
+  1: 'Alice', 
+  2: 'Bob', 
+  3: 'Charlie'
+};
+
+print(students.length);     // 3
+print(students.isEmpty);    // false
+print(students.isNotEmpty); // true
+
+print(students.keys);   // (1, 2, 3) → Iterable
+print(students.values); // (Alice, Bob, Charlie) → Iterable
+
+print(students.keys.toList());    // [1, 2, 3]
+print(students.values.toList());  // ['Alice', 'Bob', 'Charlie']
+```
+
+#### 🔁 Iterating over Map
+
+```dart
+var students = {'Alice': 85, 'Bob': 90};
+
+// keys
+for (var key in students.keys) {
+  print(key);
+}
+
+// values
+for (var value in students.values) {
+  print(value);
+}
+
+// entries
+for (var entry in students.entries) {
+  print('${entry.key}: ${entry.value}');
+}
+```
+
+#### 🔧 Map Operations
+- V putIfAbsent(K key, V ifAbsent())
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie'};
+  print(students.putIfAbsent(4, () => 'David')); // David
+  print(students); // Output: {1: Alice, 2: Bob, 3: Charlie, 4: David}
+  ```
+- void addAll(Map<K, V> other)
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie'};
+  students.addAll({5: 'Eve', 6: 'Frank'});
+  print(students); // {1: Alice, 2: Bob, 3: Charlie, 5: Eve, 6: Frank} 
+  ```
+- V? remove(Object? key)
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie'};
+  var bob = students.remove(2);
+
+  print(bob);       // Bob
+  print(students);  // {1: Alice, 3: Charlie}
+  ```
+- void removeWhere(bool test(K key, V value))
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie', 4: 'David'};
+  students.removeWhere((key, value) => key % 2 == 0); // Remove entries with even keys
+  print(students); // {1: Alice, 3: Charlie}  
+  ```
+- void clear()
+- bool containsKey(Object? key) / bool containsValue(Object? value)
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie', 4: 'David'};
+  print(students.containsKey(2));       // true
+  print(students.containsValue('Eve')); // false
+  ```
+- V update(K key, V update(V value), {V ifAbsent()?})
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie', 4: 'David'};
+  students.update(2, (value) => 'Bobby');
+  print(students); // {1: Alice, 2: Bobby, 3: Charlie, 4: David}
+
+  students.update(5, (value) => 'Eve', ifAbsent: () => 'Eve');
+  print(students); // {1: Alice, 2: Bobby, 3: Charlie, 4: David, 5: Eve}
+  ```
+- void updateAll(V update(K key, V value))
+  ```dart
+  var students = <int, String>{1: 'Alice', 2: 'Bob', 3: 'Charlie', 4: 'David'};
+  students.updateAll((key, value) => value.toUpperCase());
+  print(students); // {1: ALICE, 2: BOB, 3: CHARLIE, 4: DAVID}
+  ```
+
+#### 🧠 Key Takeaways
+
+- A `Map` stores data as key-value pairs  
+- Keys are unique, but values can be duplicated  
+- You access values using their keys: `map[key]`  
+- If a key does not exist, it returns `null`  
+- Use `containsKey()` to safely check if a key exists  
+- `Map` is strongly typed: `<KeyType, ValueType>`  
+- Keys and values can be of any data type  
+- Properties like `keys` and `values` return Iterables  
+- Methods like `update`, `remove`, and `addAll` modify the map  
+- Use `entries` to iterate over key-value pairs
+- Maps are commonly used for JSON-like data structures
 
 ---
 
