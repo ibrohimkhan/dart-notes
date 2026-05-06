@@ -438,7 +438,7 @@ nums[0] = 11;  // ❌ Unsupported operation: Cannot modify an unmodifiable list
 items[0] = 44; // ❌ Unsupported operation: Cannot modify an unmodifiable list
 ```
 
-#### ➕ Add items into the List
+#### ➕ Add items to the List
 
 ```dart
 var nums = [1, 2, 3];
@@ -450,7 +450,7 @@ nums2 += [4, 5];
 print(nums2); // [0, 1, 2, 3, 4, 5]
 ```
 
-#### 📏  Properties
+#### 📏 Properties
 
 ```dart
 var nums = [1, 2, 3];
@@ -475,19 +475,19 @@ print(nums.isNotEmpty); // true
 - clear()
 - removeWhere((element) => condition)
   ```dart
-  print([1, 2, 3, 4, 5].removeWhere((x) => x % 2 == 0)); // [1, 3, 5]
+  [1, 2, 3, 4, 5].removeWhere((x) => x % 2 == 0); // [1, 3, 5]
   ```
 - setAll(index, [item1, item2, item3]) 
   ```dart
-  print([1, 2, 3, 4, 5].setAll(0, [10, 20, 30])); // [10, 20, 30, 4, 5]
+  [1, 2, 3, 4, 5].setAll(0, [10, 20, 30]); // [10, 20, 30, 4, 5]
   ```
 - replaceRange(start, end, [item1, item2])
   ```dart
-  print([1, 2, 3, 4, 5].replaceRange(3, 5, [40, 50])); // [1, 2, 3, 40, 50]
+  [1, 2, 3, 4, 5].replaceRange(3, 5, [40, 50]); // [1, 2, 3, 40, 50]
   ```
 - fillRange(start, end, value)
   ```dart
-  print([1, 2, 3, 4, 5].fillRange(1, 4, 0)); // [1, 0, 0, 0, 5]
+  [1, 2, 3, 4, 5].fillRange(1, 4, 0); // [1, 0, 0, 0, 5]
   ```
 - join()
   ```dart
