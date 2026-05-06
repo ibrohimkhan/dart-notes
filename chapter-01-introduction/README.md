@@ -1313,3 +1313,92 @@ In Dart, all types ultimately inherit from `Object?`, while non-nullable types e
 - Use `??` to provide a fallback value
 - Use `!` only when you are sure the value is not `null`
 - Dart can promote nullable types using flow analysis
+
+---
+
+### 🌀 `dynamic` Type
+
+`dynamic` is a special type in Dart that disables static type checking for a variable.
+
+A `dynamic` variable can hold values of different types, and Dart allows calling any member on it at compile time.
+
+```dart
+dynamic value = 'hi';
+print(value.length); // 2
+
+value = 42;
+print(value.isOdd); // false
+
+value = [1, 2, 3];
+print(value.first); // 1
+```
+
+`Object` can also hold values of different non-null types:
+```dart
+Object value = 'hi';
+print(value); // hi
+
+value = 42;
+print(value); // 42
+
+value = [1, 2, 3];
+print(value); // [1, 2, 3]
+```
+
+However, unlike `Object`, a `dynamic` variable allows you to call any member at compile time. 
+
+If the actual object does not have that member, the error will happen at runtime.
+
+```dart
+dynamic value = 2;
+value.run(); // ❌ NoSuchMethodError: Class 'int' has no instance method 'run'.
+```
+
+#### ⚠️ Runtime Error
+
+The main disadvantage of dynamic is that the Dart compiler does not check whether the called member actually exists.
+
+If the member does not exist, the error appears at runtime and may crash the app.
+
+```dart
+dynamic text = 'this is a string';
+print(text.floor()); // ❌ Runtime Error: NoSuchMethodError
+```
+
+#### 📦 `Object` Type
+
+`Object` is safer than `dynamic` because Dart checks member access at compile time. 
+
+If a variable has the `dynamic` type, Dart allows you to call methods of the actual object stored in it.
+
+With `Object`, this is not allowed directly. You first need to check or cast the value to its actual type before calling type-specific methods.
+
+```dart
+dynamic value1 = 'Hello';
+print(value1.length); // ✅ OK
+
+Object value2 = 'Hello';
+// print(value2.length); // ❌ Compile-time error
+
+if (value2 is String) {
+  print(value2.length); // ✅ OK
+}
+```
+
+> 💡 `dynamic` gives flexibility but removes compile-time safety.  
+> 💡 `Object` is safer because Dart checks member access at compile time.
+> 💡 Use `Object?` if the value can also be `null`.
+
+#### 🧠 Key Takeaways
+
+- `dynamic` disables static type checking for a variable  
+- A `dynamic` variable can hold values of different types  
+- `dynamic` allows calling any member at compile time  
+- If the member does not exist, the error happens at runtime  
+- `Object` can also hold values of different non-null types  
+- `Object` is safer because Dart checks member access at compile time  
+- With `Object`, you need type checking or casting before calling type-specific members  
+- Use `Object?` if the value can also be `null`  
+- Prefer `Object` when possible; use `dynamic` only when you really need flexibility
+
+---
