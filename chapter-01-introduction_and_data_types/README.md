@@ -309,7 +309,7 @@ print(bob.isNotEmpty);  // false
 
 ### 🔣 Runes & Symbols
 
-`Runes` represent Unicode code points of a string.
+`Runes` represent the Unicode code points of a string, where each code point is stored as a UTF-32 value.
 
 Dart strings are based on UTF-16, which means some characters (like emojis) may take more than one position in a string.
 
