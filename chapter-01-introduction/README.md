@@ -1055,27 +1055,29 @@ var b = ('Alice', 25);
 print(a == b); // true
 ```
 
-- 🔢 Order matters:
-  ```dart
-  var a = ('Alice', 25);
-  var b = (25, 'Alice');
+🔢 Order matters:
+```dart
+var a = ('Alice', 25);
+var b = (25, 'Alice');
 
-  print(a == b); // false
-  ```
-- 🏷️ Names and values must match:
-  ```dart
-  var a = (name: 'Alice', age: 25);
-  var b = (name: 'Alice', age: 25);
+print(a == b); // false
+```
 
-  print(a == b); // true
-  ```
-- ⚠️ Mixed cases
-  ```dart
-  var a = ('Alice', age: 25);
-  var b = ('Alice', age: 25);
+🏷️ Names and values must match:
+```dart
+var a = (name: 'Alice', age: 25);
+var b = (name: 'Alice', age: 25);
 
-  print(a == b); // true
-  ```
+print(a == b); // true
+```
+
+⚠️ Mixed cases
+```dart
+var a = ('Alice', age: 25);
+var b = ('Alice', age: 25);
+
+print(a == b); // true
+```
 
 > 💡 Important
 > - Records use value equality
