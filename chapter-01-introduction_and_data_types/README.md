@@ -329,6 +329,7 @@ var text = 'A😊';
 print(text.runes); // (65, 128522)
 ```
 
+> 💡 `String` represents text as a sequence of UTF-16 code units, while `Runes` represent Unicode code points as UTF-32 values.
 > 💡 Use `Runes` when working with Unicode characters or emojis.
 
 A `Symbol` represents the name of an identifier as an object.
