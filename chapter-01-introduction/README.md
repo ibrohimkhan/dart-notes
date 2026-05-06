@@ -1206,4 +1206,110 @@ void main() {
 
 ---
 
-### null-safety
+### 🚫 Null Safety
+
+Dart supports null safety, which prevents you from accessing members on a `null` value. The main problem with `null` is that calling a property or method on a `null` value will crash the program.
+
+By default, types are non-nullable. This means:
+- variables must be initialized before use; otherwise, a compile-time error occurs
+- variables cannot be assigned `null` values
+
+
+```dart
+class Cat {
+  void helloMaster() {
+    print("Meow meow meow");
+  }
+}
+
+void main() {
+  Cat myCat;
+
+  // ❌ Error: A value of type 'Null' can't be assigned to a variable of type 'Cat'.
+  // myCat = null;
+
+  // ❌ Error: Non-nullable variable 'myCat' must be assigned before it can be used.
+  // myCat.helloMaster(); 
+
+  myCat = Cat();
+  myCat.helloMaster(); // ✅ Meow meow meow
+}
+```
+
+In some cases, Dart can automatically promote a nullable type to a non-nullable type if it can guarantee that the value is not null.
+
+```dart
+int? max;
+int counter = max; // ❌ Error: A value of type 'int?' can't be assigned to a variable of type 'int'.
+
+int? a = 100;
+
+// Dart knows 'a' is not null here
+int b = a; // ✅ OK due to type promotion
+
+void test(int? age) {
+  int yourAge = age; // ❌ Error: A value of type 'int?' can't be assigned to a variable of type 'int'.
+}
+```
+
+> 💡 Dart uses flow analysis to promote nullable types to non-nullable when it can guarantee the value is not null.
+
+To indicate that a variable can have the value `null`, add `?` to its type declaration:
+
+```dart
+int? a = null;
+print(a); // ✅ null
+```
+
+`?.` null-aware operator:
+
+```dart
+class Cat {
+  void helloMaster() {
+    print("Meow meow meow");
+  }
+}
+
+void main() {
+  Cat? myCat = null;
+  print(myCat); // ✅ null
+
+  // method will not be called on null value
+  myCat?.helloMaster();
+
+  myCat = Cat();
+  myCat.helloMaster(); // ✅ Meow meow meow
+
+  String? str = null;
+  print(str?.length); // ✅ null
+}
+```
+
+`??` if-null operator:
+
+```dart
+String? name = null;
+String nickname = name ?? 'Unknown';
+print(nickname); // Unknown
+```
+
+`!` null-assertion operator (`bang`):
+
+```dart
+int? age = 50;
+print(age!.isEven); // true
+
+String? name = null;
+print(name!.length); // ❌ Unhandled exception: Null check operator used on a null value
+```
+
+In Dart, all types ultimately inherit from `Object?`, while non-nullable types extend `Object`.
+
+#### 🧠 Key Takeaways
+
+- Types are non-nullable by default
+- Add `?` to allow `null`
+- Use `?.` to safely access members
+- Use `??` to provide a fallback value
+- Use `!` only when you are sure the value is not `null`
+- Dart can promote nullable types using flow analysis
