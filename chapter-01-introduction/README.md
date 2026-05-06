@@ -1,6 +1,6 @@
 # Chapter 1 — Introduction to Dart
 
-## ⚡ Blitz Overview
+> 💡 This chapter covers the core Dart types and basic concepts.
 
 ### 🧩 What is Dart?
 
@@ -1127,4 +1127,83 @@ print(userAge); // 25
 
 ---
 
-### Null
+### 🧩 Modifiers: `final`, `const`, and `late`
+
+`final`, `const`, and `late` are modifiers used to control how and when variables are initialized and whether their values can change.
+
+They help you write safer and more predictable code by defining:
+- if a variable can be reassigned  
+- when a value is assigned  
+- whether a value is known at compile time  
+
+#### 🔒 `final` vs `const`
+
+Both `final` and `const` variables cannot be reassigned after they are initialized.
+
+The main differences:
+
+- `final` variables are assigned **once at runtime**  
+- `const` variables are assigned **at compile time** and must be initialized immediately  
+- `const` is used for **compile-time constant values**  
+- `const` can also be used with constructors to create immutable objects  
+
+```dart
+final int age;
+const int maxAge = 150;
+
+age = 25; // ✅ OK (assigned once)
+
+maxAge = 200; // ❌ Error: const variables can't be reassigned
+age = 21;     // ❌ Error: final variable can only be set once
+```
+
+> 💡 Use `final` when the value is known at runtime, and `const` when the value is known at compile time.
+
+#### ⏳ `late` vs `final`
+
+`late` is used to delay the initialization of a variable.
+
+It is useful for:
+- non-null variables that are initialized later  
+- lazy initialization (value is computed when first used)
+
+#### ⚖️ Key Differences
+
+- `final` must be assigned only once  
+- `late` delays initialization  
+- `late final` = assigned once, but later  
+- both must be initialized before being used  
+
+```dart
+const int maxAge = 120;
+
+late int age;
+late final int counter;
+
+void main() {
+  age = 25;         // can be reassigned
+  counter = 0;      // can be assigned only once
+
+  print('Age: $age');
+  print('Max Age: $maxAge');
+  print('Counter: $counter');
+}
+```
+
+> ⚠️ Accessing a `late` variable before initialization will cause a runtime error.
+
+> 💡 `late` does not make a variable mutable — it only delays initialization.
+
+#### 🧠 Key Takeaways
+
+- `final` variables can be assigned only once (at runtime)  
+- `const` variables are compile-time constants and must be initialized immediately  
+- `late` delays variable initialization  
+- `late final` allows assigning a value once, but later  
+- Accessing a `late` variable before initialization causes a runtime error  
+- Use `final` when the value is known at runtime  
+- Use `const` for compile-time constant values  
+
+---
+
+### null-safety
