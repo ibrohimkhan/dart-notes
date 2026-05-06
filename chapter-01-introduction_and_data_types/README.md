@@ -1,4 +1,4 @@
-# Chapter 1 — Introduction to Dart
+# Chapter 1 — Introduction to Dart and Built-in Data Types
 
 > 💡 This chapter covers the core Dart types and basic concepts.
 
