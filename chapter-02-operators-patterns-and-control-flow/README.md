@@ -40,6 +40,30 @@ Operators in Dart are classified as follows:
 | `>=` | Greater than or equal to | `4 >= 2` -> `true` |
 | `<=` | Less than or equal to | `10 <= 3` -> `false` |
 
-#### Type test operators
+#### 🧪 Type test operators
+
+| Operator | Description | Example |
+| :--- | :--- | :--- |
+| `as` | Typecast | `(value as String).length` |
+| `is` | Returns `true` if the object has the specified type | `int a = 3;` `a is int` -> `true` |
+| `is!` | Returns `true` if the object doesn't have the specified type | `int a = 3;` `a is! int` -> `false` |
+
+```dart
+Object value = 'Hello Dart';
+
+print(value is String);  // true
+print(value is! int);    // true
+
+if (value is String) {
+  print(value.length);   // 10
+}
+
+var text = value as String;
+print(text.toUpperCase()); // HELLO DART
+```
+
+> 💡 Use `is` to check a type safely.
+
+> 💡 Use `as` only when you are sure about the object's type.
 
 ----
