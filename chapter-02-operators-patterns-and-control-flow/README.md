@@ -29,4 +29,17 @@ Operators in Dart are classified as follows:
 | `--a` | Prefix decrement | Decrements `a` first, then uses its new value |
 | `a--` | Postfix decrement | Uses the current value of `a`, then decrements it |
 
+#### ⚖️ Comparison operators
+
+| Operator | Description | Example |
+| :--- | :--- | :--- |
+| `==` | Equal to | `2 == 2` -> `true` |
+| `!=` | Not equal to | `2 != 2` -> `false` |
+| `>` | Greater than | `3 > 2` -> `true` |
+| `<` | Less than | `7 < 2` -> `false` |
+| `>=` | Greater than or equal to | `4 >= 2` -> `true` |
+| `<=` | Less than or equal to | `10 <= 3` -> `false` |
+
+#### Type test operators
+
 ----
