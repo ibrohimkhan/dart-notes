@@ -14,14 +14,16 @@ Operators in Dart are classified as follows:
 - Cascade notation
 - Other operators
 
+#### 🧮 Arithmetic operators
+
 | Operator | Description | Example |
 | :--- | :--- | :--- |
-| `+` | Add | `2 + 4 = 6` |
-| `-` | Subtract | `3 - 1 = 2` |
-| `*` | Multiply | `2 * 2 = 4` |
-| `/` | Divide | `7 / 2 = 3.5` |
-| `%` | Remainder of an integer division (modulo) | `4 % 2 = 0` |
-| `~/` | Divide, returning an integer result | `10 ~/ 3 = 3` |
+| `+` | Addition | `2 + 4 = 6` |
+| `-` | Subtraction | `3 - 1 = 2` |
+| `*` | Multiplication | `2 * 2 = 4` |
+| `/` | Division | `7 / 2 = 3.5` |
+| `%` | Remainder after division (modulo) | `4 % 2 = 0` |
+| `~/` | Integer division | `10 ~/ 3 = 3` |
 | `++a` | Prefix increment | Increments `a` first, then uses its new value |
 | `a++` | Postfix increment | Uses the current value of `a`, then increments it |
 | `--a` | Prefix decrement | Decrements `a` first, then uses its new value |
