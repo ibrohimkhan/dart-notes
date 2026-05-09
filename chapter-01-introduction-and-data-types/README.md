@@ -1028,7 +1028,7 @@ print(user3.name);  // Eva
 > 💡 Record syntax rule in type definition: positional fields come first, named fields go last.
 
 ```dart
-// {String name}, int) ❌
+// ({String name}, int) ❌
 ({String name}, int) user = (name: 'Charlie', 35); // ❌
 
 // (int, {String name}) ✅
