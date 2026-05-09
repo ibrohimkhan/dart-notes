@@ -172,10 +172,6 @@ Other operators are used for function calls, member access, indexing, and workin
 | `?.` | Accesses a member only if the object is not `null` | `person?.name` |
 | `!` | Null assertion operator | `name!.length` |
 
-> 💡 The `!` operator tells Dart that a nullable value is not `null`.
-
-> Use it carefully, because it throws an error if the value is actually `null`.
-
 ```dart
 var nums = [10, 20, 30];
 
@@ -187,6 +183,10 @@ print(name!.length); // 4
 String? noName;
 print(noName?.length); // null
 ```
+
+> 💡 The `!` operator tells Dart that a nullable value is not `null`.
+
+> Use it carefully, because it throws an error if the value is actually `null`.
 
 ----
 
