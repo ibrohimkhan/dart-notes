@@ -74,7 +74,7 @@ print(text.toUpperCase()); // HELLO DART
 | `=` | Assignment operator | `var a = 6;` |
 | `+=` | Adds and assigns | `var a = 6;` `a += 3;` → `9`|
 | `-=` | Subtracts and assigns | `var a = 6;` `a -= 3;` → `3` |
-| `*=` | Multiplys and assigns | `var a = 6;` `a *= 2;` → `12` |
+| `*=` | Multiplies and assigns | `var a = 6;` `a *= 2;` → `12` |
 | `/=` | Divides and assigns | `var a = 3.0;` `a /= 3;` → `1.0` |
 | `%=` | Modulo and assign | `var a = 4;` `a %= 2;` → `0` |
 | `~/=` | Truncating division and assign | `var a = 9;` `a ~/= 3;` → `3` |
