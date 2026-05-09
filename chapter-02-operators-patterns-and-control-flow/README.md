@@ -85,7 +85,7 @@ print(text.toUpperCase()); // HELLO DART
 | Operator | Description | Example |
 | :--- | :--- | :--- |
 | `&&` | Logical AND | `true && true` → `true`; all other combinations return `false` |
-| `||` | Logical OR | `false || false` → `false`; all other combinations return `true` |
+| <code>&#124;&#124;</code> | Logical OR | <code>false &#124;&#124; false</code> → `false`; all other combinations return `true` |
 | `!` | Logical NOT (negation) | `!true` → `false`; `!false` → `true` |
 
 Logical operators are commonly used with Boolean expressions.
@@ -101,7 +101,7 @@ Bitwise and shift operators work with the binary representation of integer value
 | Operator | Description | Example |
 | :--- | :--- | :--- |
 | `&` | Bitwise AND | `5 & 3` → `1` |
-| `|` | Bitwise OR | `5 | 3` → `7` |
+| <code>&#124;</code> | Bitwise OR | <code>5 &#124; 3</code> → `7` |
 | `^` | Bitwise XOR | `5 ^ 3` → `6` |
 | `~` | Bitwise complement | `~5` → `-6` |
 | `<<` | Shift left | `3 << 1` → `6` |
