@@ -371,3 +371,244 @@ final result = condition1
 In such cases, it is better to use `if-else` or `switch`.
 
 ---
+
+### 🔁 Loops
+
+Loops are used to repeat a block of code multiple times.
+
+Dart supports several loop structures:
+
+| Loop | Description |
+| :--- | :--- |
+| `for` | Used when we need a counter, index, or custom iteration logic |
+| `for-in` | Used to iterate over values in an `Iterable` |
+| `while` | Checks the condition before executing the body |
+| `do-while` | Executes the body first, then checks the condition |
+
+
+#### 🔢 `for` loop
+
+The `for` loop is useful when we need an index, counter, or custom iteration logic.
+
+```dart
+for (var i = 0; i < 5; i++) {
+  print(i);
+}
+```
+
+```dart
+final numbers = [10, 20, 30];
+
+for (var i = 0; i < numbers.length; i++) {
+  print('Index: $i, value: ${numbers[i]}');
+}
+```
+
+Use `for` when you need access to the index.
+
+#### 📚 `for-in` loop
+
+The `for-in` loop is used to iterate over elements of an `Iterable`.
+
+```dart
+final numbers = [10, 20, 30];
+
+for (final number in numbers) {
+  print(number);
+}
+```
+
+Use `for-in` when you do not need an index.
+
+#### ⚖️ Difference between `for` and `for-in`
+
+| Loop | Best used when |
+| :--- | :--- |
+| `for` | You need an index, counter, or custom iteration logic |
+| `for-in` | You only need to iterate over values |
+
+```dart
+final names = ['Alex', 'Anna', 'John'];
+
+for (var i = 0; i < names.length; i++) {
+  print('$i: ${names[i]}');
+}
+```
+
+```dart
+final names = ['Alex', 'Anna', 'John'];
+
+for (final name in names) {
+  print(name);
+}
+```
+
+#### 🔄 `while` loop
+
+The `while` loop checks the condition before executing the loop body.
+
+```dart
+var i = 0;
+
+while (i < 3) {
+  print(i++);
+}
+```
+
+If the condition is `false` from the beginning, the body will not execute.
+
+```dart
+var i = 5;
+
+while (i < 3) {
+  print(i++); // This code will not run
+}
+```
+
+#### 🔂 `do-while` loop
+
+The `do-while` loop executes the body first and checks the condition after that.
+
+```dart
+var i = 0;
+
+do {
+  print(i++);
+} while (i < 3);
+```
+
+The body of a `do-while` loop runs at least once.
+
+```dart
+var i = 5;
+
+do {
+  print(i++); // Runs once
+} while (i < 3);
+```
+
+#### ⚖️ Difference between `while` and `do-while`
+
+| Loop | Condition check | Minimum executions |
+| :--- | :--- | :--- |
+| `while` | Before the body | Zero |
+| `do-while` | After the body | One |
+
+
+#### ⛔ `break` and `continue`
+
+`break` and `continue` are used to control loop execution.
+
+
+#### 🛑 `break`
+
+The `break` statement stops the loop completely.
+
+```dart
+for (var i = 0; i < 10; i++) {
+  if (i == 5) {
+    break;
+  }
+
+  print(i);
+}
+```
+
+Output:
+
+```text
+0
+1
+2
+3
+4
+```
+
+#### ⏭️ `continue`
+
+The `continue` statement skips the current iteration and moves to the next one.
+
+```dart
+for (var i = 0; i < 5; i++) {
+  if (i == 2) {
+    continue;
+  }
+
+  print(i);
+}
+```
+
+Output:
+
+```text
+0
+1
+3
+4
+```
+
+#### 🗺️ Iterating over maps
+
+A `Map<K, V>` stores data as key-value pairs.
+
+The most common way to iterate over a map is to use `.entries`.
+
+```dart
+final capitals = {
+  'Tajikistan': 'Dushanbe',
+  'Germany': 'Berlin',
+};
+
+for (final entry in capitals.entries) {
+  print('${entry.key}: ${entry.value}');
+}
+```
+
+#### 🧩 Map destructuring with `MapEntry`
+
+When iterating over `.entries`, each item is a `MapEntry`.
+
+It can be destructured.
+
+```dart
+final capitals = {
+  'Tajikistan': 'Dushanbe',
+  'Germany': 'Berlin',
+};
+
+for (final MapEntry(:key, :value) in capitals.entries) {
+  print('$key: $value');
+}
+```
+
+or
+
+```dart
+for (final MapEntry(key: country, value: capital) in capitals.entries) {
+  print('$country: $capital');
+}
+```
+
+Without destructuring:
+
+```dart
+for (final entry in capitals.entries) {
+  print('${entry.key}: ${entry.value}');
+}
+```
+
+#### 🔑 Iterating over keys
+
+```dart
+for (final key in capitals.keys) {
+  print(key);
+}
+```
+
+#### 📌 Iterating over values
+
+```dart
+for (final value in capitals.values) {
+  print(value);
+}
+```
