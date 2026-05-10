@@ -192,5 +192,182 @@ print(noName?.length); // null
 
 ### 🧬 Patterns
 
+A **pattern** describes the expected form of a value.
+
+Patterns can be used to check whether a value:
+- has a specific shape
+- has a specific type
+- equals a specific value
+- matches a specific condition
+- contains values that can be extracted
+
+```dart
+final value = 10;
+
+final result = switch (value) {
+  < 0 => 'Negative',
+  == 0 => 'Zero',
+  > 0 => 'Positive',
+  _ => 'Unknown',
+};
+
+print(result); // Positive
+```
+
+In this example:
+
+```dart
+< 0
+== 0
+> 0
+_
+```
+
+are patterns.
+
+They describe what kind of value should match each `case`.
+
+> 💡 A `switch` expression must be exhaustive.
+
+> The `_` pattern means “match anything”
+
+#### 🔍 Pattern Matching
+
+**Pattern matching** means comparing a value with a pattern.
+
+If the value matches the pattern, Dart executes the related code block or returns the related value.
+
+```dart
+final age = 25;
+
+final category = switch (age) {
+  >= 0 && < 18 => 'Child',
+  >= 18 && < 65 => 'Adult',
+  >= 65 => 'Senior',
+  _ => 'Unknown',
+};
+
+print(category); // Adult
+```
+
+#### 📦 Destructuring
+
+**Destructuring** means extracting values from a complex structure into separate variables.
+
+It can be used with:
+- lists
+- records
+- maps
+- objects
+- function return values
+
+```dart
+final user = ('Alex', 30);
+
+final (name, age) = user;
+
+print(name); // Alex
+print(age);  // 30
+```
+
+Without destructuring, we would write:
+
+```dart
+final name = user.$1;
+final age = user.$2;
+```
+
+Destructuring makes the code shorter and more readable.
+
+---
+
+### 🔀 Conditional Statements
+
+Conditional statements allow a program to execute different blocks of code depending on a condition.
+
+#### ✅ `if`
+
+The `if` statement executes code only when the condition is `true`.
+
+```dart
+final age = 20;
+
+if (age >= 18) {
+  print('Adult');
+}
+```
+
+The condition inside `if` must be a boolean expression.
+
+#### 🔁 `if-else`
+
+The `else` block is optional.
+
+It is used when we want to execute another block of code if the condition is `false`.
+
+```dart
+final age = 16;
+
+if (age >= 18) {
+  print('Adult');
+
+} else {
+  print('Minor');
+}
+```
+
+#### 🪜 `else-if`
+
+`else-if` is used when there are multiple conditions.
+
+```dart
+final score = 85;
+
+if (score >= 90) {
+  print('Excellent');
+
+} else if (score >= 70) {
+  print('Good');
+
+} else {
+  print('Needs improvement');
+}
+```
+
+#### ❓ Ternary Operator
+
+The ternary operator is a short form of simple `if-else`.
+
+```dart
+condition ? true : false
+```
+
+```dart
+final age = 20;
+
+final message = age >= 18 ? 'Adult' : 'Minor';
+
+print(message);
+```
+
+> Use the ternary operator when the condition is simple and the result is easy to read.
+
+```dart
+final discount = isStudent ? 0.2 : 0.0;
+```
+
+> Avoid nested ternary expressions because they are difficult to read.
+
+```dart
+final result = condition1
+    ? condition2
+        ? 'A'
+        : 'B'
+    : condition3
+        ? 'C'
+        : 'D';
+```
+
+In such cases, it is better to use `if-else` or `switch`.
 
 ---
