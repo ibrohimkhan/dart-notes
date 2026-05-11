@@ -192,50 +192,22 @@ print(noName?.length); // null
 
 ### 🧬 Patterns
 
-A **pattern** describes the expected form of a value.
+Patterns describe the expected **shape**, **type**, **structure**, or **value**.
 
-Patterns can be used to check whether a value:
-- has a specific shape
-- has a specific type
-- equals a specific value
-- matches a specific condition
-- contains values that can be extracted
+They are used when Dart needs to check whether a value matches a certain form.
 
-```dart
-final value = 10;
+Patterns are useful for:
 
-final result = switch (value) {
-  < 0 => 'Negative',
-  == 0 => 'Zero',
-  > 0 => 'Positive',
-  _ => 'Unknown',
-};
+- checking values;
+- checking types;
+- extracting data from records, lists, maps, and objects;
+- writing more expressive `switch` and `if-case` logic.
 
-print(result); // Positive
-```
-
-In this example:
-
-```dart
-< 0
-== 0
-> 0
-_
-```
-
-are patterns.
-
-They describe what kind of value should match each `case`.
-
-> 💡 A `switch` expression must be exhaustive.
-
-> The `_` pattern means “match anything”
-
-#### 🔍 Pattern Matching
-
-**Pattern matching** means comparing a value with a pattern.
-
-If the value matches the pattern, Dart executes the related code block or returns the related value.
+| Concept | Description | Example |
+| :--- | :--- | :--- |
+| Pattern | Describes what a value should look like | `>= 18`, `[a, b]`, `User(:name)` |
+| Pattern matching | Checks whether a value matches a pattern | `case >= 18:` |
+| Destructuring | Extracts values from a matched structure | `final (name, age) = user;` |
 
 ```dart
 final age = 25;
@@ -250,44 +222,68 @@ final category = switch (age) {
 print(category); // Adult
 ```
 
-#### 📦 Destructuring
+> 💡 The `_` pattern means “match anything”.
 
-**Destructuring** means extracting values from a complex structure into separate variables.
+> 💡 It is commonly used as a fallback case.
 
-It can be used with:
-- lists
-- records
-- maps
-- objects
-- function return values
+#### 🔍 Pattern matching
 
-```dart
-final user = ('Alex', 30);
+**Pattern matching** means comparing a value with a pattern.
 
-final (name, age) = user;
-
-print(name); // Alex
-print(age);  // 30
-```
-
-Without destructuring, we would write:
+If the value matches the pattern, Dart executes the related branch.
 
 ```dart
-final name = user.$1;
-final age = user.$2;
+final value = 10;
+
+switch (value) {
+  case < 0:
+    print('Negative');
+  case == 0:
+    print('Zero');
+  case > 0:
+    print('Positive');
+  default:
+    print('Unknown');
+}
 ```
 
-Destructuring makes the code shorter and more readable.
+Common pattern types:
 
----
+| Pattern type | Description | Example |
+| :--- | :--- | :--- |
+| Constant pattern | Matches a specific value | `case 200:` |
+| Variable pattern | Stores the matched value in a variable | `case var value:` |
+| Wildcard pattern | Matches anything and ignores the value | `case _:` |
+| Relational pattern | Compares a value | `case >= 18:` |
+| Logical pattern | Combines patterns | `case >= 18 && <= 65:` |
+| List pattern | Matches a list structure | `case [a, b]:` |
+| Record pattern | Matches a record structure | `case (name, age):` |
+| Object pattern | Matches and destructures an object | `case User(:name):` |
 
-### 🔀 Conditional Statements
+> 💡 Pattern matching checks the value.
 
-Conditional statements allow a program to execute different blocks of code depending on a condition.
+> 💡 Destructuring extracts values from it.
 
-#### ✅ `if`
+----
 
-The `if` statement executes code only when the condition is `true`.
+### 🔀 Control flow
+
+Control flow means controlling which part of the program should run.
+
+Dart provides several control flow tools:
+
+- conditional statements;
+- loops;
+- `switch`;
+- `if-case`;
+- `break`;
+- `continue`.
+
+#### ✅ Conditional statements
+
+Conditional statements are used when code should run only under certain conditions.
+
+**`if`** runs a block of code only if the condition is `true`.
 
 ```dart
 final age = 20;
@@ -297,104 +293,50 @@ if (age >= 18) {
 }
 ```
 
-The condition inside `if` must be a boolean expression.
-
-#### 🔁 `if-else`
-
-The `else` block is optional.
-
-It is used when we want to execute another block of code if the condition is `false`.
+**`else`** is optional and runs when the `if` condition is `false`.
 
 ```dart
 final age = 16;
 
 if (age >= 18) {
   print('Adult');
-
 } else {
   print('Minor');
 }
 ```
 
-#### 🪜 `else-if`
-
-`else-if` is used when there are multiple conditions.
+**`else-if`** is used when there are multiple conditions.
 
 ```dart
 final score = 85;
 
 if (score >= 90) {
   print('Excellent');
-
 } else if (score >= 70) {
   print('Good');
-
 } else {
   print('Needs improvement');
 }
 ```
 
-#### ❓ Ternary Operator
+> 💡 Use normal `if` when you need to check a Boolean condition.
 
-The ternary operator is a short form of simple `if-else`.
+> 💡 Use the ternary operator only for short and simple `if-else` expressions.
 
-```dart
-condition ? true : false
-```
-
-```dart
-final age = 20;
-
-final message = age >= 18 ? 'Adult' : 'Minor';
-
-print(message);
-```
-
-> Use the ternary operator when the condition is simple and the result is easy to read.
-
-```dart
-final discount = isStudent ? 0.2 : 0.0;
-```
-
-> Avoid nested ternary expressions because they are difficult to read.
-
-```dart
-final result = condition1
-    ? condition2
-        ? 'A'
-        : 'B'
-    : condition3
-        ? 'C'
-        : 'D';
-```
-
-In such cases, it is better to use `if-else` or `switch`.
-
----
-
-### 🔁 Loops
+#### 🔁 Loops
 
 Loops are used to repeat a block of code multiple times.
 
-Dart supports several loop structures:
-
 | Loop | Description |
 | :--- | :--- |
-| `for` | Used when we need a counter, index, or custom iteration logic |
+| `for` | Used when we need an index, counter, or custom iteration logic |
 | `for-in` | Used to iterate over values in an `Iterable` |
-| `while` | Checks the condition before executing the body |
-| `do-while` | Executes the body first, then checks the condition |
+| `while` | Checks the condition before running the loop body |
+| `do-while` | Runs the body first, then checks the condition |
 
+**`for` loop**
 
-#### 🔢 `for` loop
-
-The `for` loop is useful when we need an index, counter, or custom iteration logic.
-
-```dart
-for (var i = 0; i < 5; i++) {
-  print(i);
-}
-```
+Use `for` when you need an index or counter.
 
 ```dart
 final numbers = [10, 20, 30];
@@ -404,11 +346,9 @@ for (var i = 0; i < numbers.length; i++) {
 }
 ```
 
-Use `for` when you need access to the index.
+**`for-in` loop**
 
-#### 📚 `for-in` loop
-
-The `for-in` loop is used to iterate over elements of an `Iterable`.
+Use `for-in` when you only need values from a collection.
 
 ```dart
 final numbers = [10, 20, 30];
@@ -418,91 +358,61 @@ for (final number in numbers) {
 }
 ```
 
-Use `for-in` when you do not need an index.
-
-#### ⚖️ Difference between `for` and `for-in`
-
 | Loop | Best used when |
 | :--- | :--- |
 | `for` | You need an index, counter, or custom iteration logic |
-| `for-in` | You only need to iterate over values |
+| `for-in` | You only need values from a collection |
 
-```dart
-final names = ['Alex', 'Anna', 'John'];
+**`while` loop**
 
-for (var i = 0; i < names.length; i++) {
-  print('$i: ${names[i]}');
-}
-```
-
-```dart
-final names = ['Alex', 'Anna', 'John'];
-
-for (final name in names) {
-  print(name);
-}
-```
-
-#### 🔄 `while` loop
-
-The `while` loop checks the condition before executing the loop body.
+`while` checks the condition before executing the body.
 
 ```dart
 var i = 0;
 
 while (i < 3) {
-  print(i++);
+  print(i);
+  i++;
 }
 ```
 
-If the condition is `false` from the beginning, the body will not execute.
+If the condition is `false` from the beginning, the body will not run.
 
 ```dart
 var i = 5;
 
 while (i < 3) {
-  print(i++); // This code will not run
+  print(i); // This code will not run
+  i++;
 }
 ```
 
-#### 🔂 `do-while` loop
+**`do-while` loop**
 
-The `do-while` loop executes the body first and checks the condition after that.
-
-```dart
-var i = 0;
-
-do {
-  print(i++);
-} while (i < 3);
-```
-
-The body of a `do-while` loop runs at least once.
+`do-while` executes the body first and checks the condition after that.
 
 ```dart
 var i = 5;
 
 do {
-  print(i++); // Runs once
+  print(i); // Runs once
+  i++;
 } while (i < 3);
 ```
-
-#### ⚖️ Difference between `while` and `do-while`
 
 | Loop | Condition check | Minimum executions |
 | :--- | :--- | :--- |
 | `while` | Before the body | Zero |
 | `do-while` | After the body | One |
 
-
 #### ⛔ `break` and `continue`
 
 `break` and `continue` are used to control loop execution.
 
-
-#### 🛑 `break`
-
-The `break` statement stops the loop completely.
+| Statement | Description |
+| :--- | :--- |
+| `break` | Stops the loop completely |
+| `continue` | Skips the current iteration and moves to the next one |
 
 ```dart
 for (var i = 0; i < 10; i++) {
@@ -524,10 +434,6 @@ Output:
 4
 ```
 
-#### ⏭️ `continue`
-
-The `continue` statement skips the current iteration and moves to the next one.
-
 ```dart
 for (var i = 0; i < 5; i++) {
   if (i == 2) {
@@ -547,7 +453,7 @@ Output:
 4
 ```
 
-#### 🗺️ Iterating over maps
+#### 🗺️ Iterating over `Map<K, V>`
 
 A `Map<K, V>` stores data as key-value pairs.
 
@@ -564,24 +470,15 @@ for (final entry in capitals.entries) {
 }
 ```
 
-#### 🧩 Map destructuring with `MapEntry`
-
-When iterating over `.entries`, each item is a `MapEntry`.
-
-It can be destructured.
+With destructuring:
 
 ```dart
-final capitals = {
-  'Tajikistan': 'Dushanbe',
-  'Germany': 'Berlin',
-};
-
 for (final MapEntry(:key, :value) in capitals.entries) {
   print('$key: $value');
 }
 ```
 
-or
+Full form:
 
 ```dart
 for (final MapEntry(key: country, value: capital) in capitals.entries) {
@@ -589,26 +486,530 @@ for (final MapEntry(key: country, value: capital) in capitals.entries) {
 }
 ```
 
-Without destructuring:
-
-```dart
-for (final entry in capitals.entries) {
-  print('${entry.key}: ${entry.value}');
-}
-```
-
-#### 🔑 Iterating over keys
+You can also iterate only over keys or values.
 
 ```dart
 for (final key in capitals.keys) {
   print(key);
 }
-```
 
-#### 📌 Iterating over values
-
-```dart
 for (final value in capitals.values) {
   print(value);
 }
 ```
+
+> 💡 Use `.entries` when you need both key and value.
+
+#### 🔀 `switch-case`
+
+`switch-case` is used to choose one branch of execution based on a value.
+
+In modern Dart, each `case` uses a pattern.
+
+This means `switch` can match:
+- simple values;
+- types;
+- ranges;
+- lists;
+- records;
+- objects;
+- additional conditions with `when`.
+
+```dart
+final command = 'open';
+
+switch (command) {
+  case 'open':
+    print('Opening...');
+  case 'close':
+    print('Closing...');
+  default:
+    print('Unknown command');
+}
+```
+
+> 💡 Non-empty `case` clauses do not require `break` in modern Dart.
+
+#### 📤 `switch` expression
+
+A `switch` expression returns a value.
+
+```dart
+final statusCode = 200;
+
+final message = switch (statusCode) {
+  200 => 'OK',
+  404 => 'Not found',
+  500 => 'Server error',
+  _ => 'Unknown',
+};
+
+print(message); // OK
+```
+
+A `switch` expression must be exhaustive.
+
+That means it must handle all possible values.
+
+```dart
+final value = 10;
+
+final result = switch (value) {
+  < 0 => 'Negative',
+  == 0 => 'Zero',
+  > 0 => 'Positive',
+  _ => 'Unknown',
+};
+
+print(result); // Positive
+```
+
+> 💡 Use `_` as a fallback pattern when Dart cannot prove that all possible values are covered.
+
+#### 📏 Relational patterns in `switch`
+
+Relational patterns allow comparisons.
+
+| Pattern | Description |
+| :--- | :--- |
+| `< value` | Less than |
+| `<= value` | Less than or equal to |
+| `> value` | Greater than |
+| `>= value` | Greater than or equal to |
+| `== value` | Equal to |
+| `!= value` | Not equal to |
+
+```dart
+final age = 25;
+
+final category = switch (age) {
+  >= 0 && < 18 => 'Child',
+  >= 18 && < 65 => 'Adult',
+  >= 65 => 'Senior',
+  _ => 'Unknown',
+};
+
+print(category); // Adult
+```
+
+#### 👤 Object patterns in `switch`
+
+Object patterns allow us to match and destructure objects.
+
+```dart
+class Employee {
+  final String name;
+  final int age;
+  final String position;
+  final int salary;
+
+  Employee(this.name, this.age, this.position, this.salary);
+}
+```
+
+Full form:
+
+```dart
+final employee = Employee('Anna', 27, 'Team Leader', 29000);
+
+switch (employee) {
+  case Employee(name: var name, age: var age):
+    print('$name is $age years old');
+}
+```
+
+Shorter form:
+
+```dart
+switch (employee) {
+  case Employee(:name, :age):
+    print('$name is $age years old');
+}
+```
+
+#### 🏷️ Labels in `switch`
+
+Labels can be used when one `case` needs to continue execution from another `case`.
+
+```dart
+final command = 'open';
+
+switch (command) {
+  case 'open':
+    print('Opening...');
+    continue afterOpen;
+
+  case 'close':
+    print('Closing...');
+
+  afterOpen:
+  case 'pending':
+    print('Additional processing...');
+}
+```
+
+This feature should be used carefully because it can make code harder to read.
+
+In most cases, it is better to avoid labels and use clearer logic.
+
+```dart
+switch (command) {
+  case 'open' || 'pending':
+    print('Additional processing...');
+  case 'close':
+    print('Closing...');
+  default:
+    print('Unknown command');
+}
+```
+
+> 💡 Labels are available for control flow, but they are rarely needed in everyday Dart code.
+
+----
+
+#### 🧪 `if-case`
+
+`if-case` checks whether a value matches a pattern.
+
+A normal `if` checks a Boolean condition.
+
+```dart
+if (value is String) {
+  print(value.length);
+}
+```
+
+`if-case` checks the structure of a value and can extract data at the same time.
+
+```dart
+final pair = [10, 20];
+
+if (pair case [int x, int y]) {
+  print('x = $x, y = $y');
+}
+```
+
+```dart
+final employee = Employee('Anna', 27, 'Team Leader', 29000);
+
+if (employee case Employee(:name, :salary)) {
+  print('$name earns $salary');
+}
+```
+
+| Statement | Purpose |
+| :--- | :--- |
+| `if` | Checks a Boolean condition |
+| `if-case` | Matches a value against a pattern and can destructure it |
+
+> 💡 Use `if-case` when you want to check structure and extract data at the same time.
+
+----
+
+#### 🛡️ Guard clauses
+
+A **guard clause** is an additional condition after a pattern.
+
+In Dart, guard clauses are written using the `when` keyword.
+
+They can be used with:
+
+- `switch` statement;
+- `switch` expression;
+- `if-case`.
+
+```dart
+final age = 22;
+
+final result = switch (age) {
+  int value when value >= 18 => 'Adult',
+  int value when value < 18 => 'Minor',
+  _ => 'Unknown',
+};
+
+print(result); // Adult
+```
+
+```dart
+final employee = Employee('Anna', 27, 'Team Leader', 29000);
+
+switch (employee) {
+  case Employee(:name, :salary) when salary > 20000:
+    print('$name has a high salary');
+
+  case Employee(:name):
+    print('$name has a regular salary');
+}
+```
+
+```dart
+if (employee case Employee(:name, :salary) when salary > 20000) {
+  print('$name has a high salary');
+}
+```
+
+> 💡 The pattern is checked first.
+
+> 💡 Then the `when` condition is checked.
+
+----
+
+### 📦 Destructuring
+
+Destructuring extracts values from a structure into separate variables.
+
+Dart supports destructuring for:
+- lists;
+- records;
+- objects;
+- `MapEntry` objects.
+
+#### 📋 List destructuring
+
+Full list destructuring:
+
+```dart
+final numbers = [1, 2, 3];
+
+final [a, b, c] = numbers;
+
+print(a); // 1
+print(b); // 2
+print(c); // 3
+```
+
+Ignoring values with `_`:
+
+```dart
+final numbers = [1, 2, 3];
+
+final [first, _, third] = numbers;
+
+print(first); // 1
+print(third); // 3
+```
+
+Using a rest pattern:
+
+```dart
+final numbers = [1, 2, 3, 4, 5];
+
+final [first, ...middle, last] = numbers;
+
+print(first);  // 1
+print(middle); // [2, 3, 4]
+print(last);   // 5
+```
+
+List pattern in `if-case`:
+
+```dart
+final pair = [10, 20];
+
+if (pair case [int x, int y]) {
+  print('x = $x, y = $y');
+}
+```
+
+List pattern in `switch`:
+
+```dart
+final numbers = [1, 2, 3];
+
+switch (numbers) {
+  case [var first, var second, var third]:
+    print('$first, $second, $third');
+
+  case [var onlyOne]:
+    print('Only one element: $onlyOne');
+
+  default:
+    print('Unknown structure');
+}
+```
+
+#### 🧾 Record destructuring
+
+Positional record destructuring:
+
+```dart
+final user = ('Alex', 30);
+
+final (name, age) = user;
+
+print(name); // Alex
+print(age);  // 30
+```
+
+Named record destructuring:
+
+```dart
+final user = (name: 'Alex', age: 30);
+
+final (:name, :age) = user;
+
+print(name); // Alex
+print(age);  // 30
+```
+
+Destructuring with renaming:
+
+```dart
+final user = (name: 'Alex', age: 30);
+
+final (name: userName, age: userAge) = user;
+
+print(userName); // Alex
+print(userAge);  // 30
+```
+
+Returning multiple values with records:
+
+```dart
+(String, int) getUserInfo() {
+  return ('Alex', 30);
+}
+
+final (name, age) = getUserInfo();
+
+print(name); // Alex
+print(age);  // 30
+```
+
+With named fields:
+
+```dart
+({String name, int age}) getUserInfo() {
+  return (name: 'Alex', age: 30);
+}
+
+final (:name, :age) = getUserInfo();
+
+print(name); // Alex
+print(age);  // 30
+```
+
+> 💡 Records are useful when you need to return several values without creating a separate class.
+
+#### 👤 Object destructuring
+
+Object destructuring extracts values from object fields or getters.
+
+```dart
+class User {
+  final String name;
+  final int age;
+
+  User(this.name, this.age);
+}
+```
+
+Short form:
+
+```dart
+final user = User('Alex', 30);
+
+final User(:name, :age) = user;
+
+print(name); // Alex
+print(age);  // 30
+```
+
+Full form:
+
+```dart
+final User(name: userName, age: userAge) = user;
+
+print(userName); // Alex
+print(userAge);  // 30
+```
+
+Inside `switch`:
+
+```dart
+switch (user) {
+  case User(:name, :age):
+    print('$name is $age years old');
+}
+```
+
+Inside `if-case`:
+
+```dart
+if (user case User(:name, :age)) {
+  print('$name is $age years old');
+}
+```
+
+> 💡 Object patterns use getters to extract values from an object.
+
+#### 🗺️ `MapEntry` destructuring
+
+Maps are commonly destructured through `MapEntry` when iterating over `.entries`.
+
+```dart
+final scores = {
+  'Alex': 90,
+  'Anna': 95,
+};
+
+for (final MapEntry(:key, :value) in scores.entries) {
+  print('$key: $value');
+}
+```
+
+Full form:
+
+```dart
+for (final MapEntry(key: name, value: score) in scores.entries) {
+  print('$name: $score');
+}
+```
+
+Without destructuring:
+
+```dart
+for (final entry in scores.entries) {
+  print('${entry.key}: ${entry.value}');
+}
+```
+
+> 💡 The destructuring version is shorter and cleaner when both key and value are needed.
+
+----
+
+### 🧠 Summary
+
+In this chapter, we learned that:
+
+- Dart has different groups of operators;
+- `if`, `else-if`, and `else` are used for conditional execution;
+- the `else` block is optional;
+- loops are used to repeat code;
+- `for` is useful when we need an index;
+- `for-in` is useful when we only need values;
+- `while` checks the condition before execution;
+- `do-while` executes at least once;
+- `break` stops a loop;
+- `continue` skips the current iteration;
+- `Map<K, V>` is commonly iterated using `.entries`;
+- `switch-case` selects a branch based on patterns;
+- `switch` expressions return values and must be exhaustive;
+- `if-case` matches a value against a pattern;
+- guard clauses use `when` for additional conditions;
+- patterns describe the expected shape, type, structure, or value;
+- pattern matching checks whether a value matches a pattern;
+- destructuring extracts values from lists, records, objects, and `MapEntry` objects.
+
+> 💡 Patterns and destructuring make Dart code more expressive, readable, and concise.
+
+----
+
+### 🔗 Useful references
+
+- [Dart: Operators](https://dart.dev/language/operators)
+- [Dart: Patterns](https://dart.dev/language/patterns)
+- [Dart: Pattern types](https://dart.dev/language/pattern-types)
+- [Dart: Branches](https://dart.dev/language/branches)
+- [Dart: Loops](https://dart.dev/language/loops)
+- [Dart: Records](https://dart.dev/language/records)
