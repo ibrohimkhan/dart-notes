@@ -665,8 +665,6 @@ switch (command) {
 
 > 💡 Labels are available for control flow, but they are rarely needed in everyday Dart code.
 
-----
-
 #### 🧪 `if-case`
 
 `if-case` checks whether a value matches a pattern.
@@ -703,8 +701,6 @@ if (employee case Employee(:name, :salary)) {
 | `if-case` | Matches a value against a pattern and can destructure it |
 
 > 💡 Use `if-case` when you want to check structure and extract data at the same time.
-
-----
 
 #### 🛡️ Guard clauses
 
