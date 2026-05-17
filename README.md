@@ -30,6 +30,7 @@ Chapters will be added progressively:
 
 - [Chapter 1 — Introduction to Dart and Built-in Data Types](./chapter-01-introduction-and-data-types/README.md)
 - [Chapter 2 — Operators, Patterns, and Control Flow](./chapter-02-operators-patterns-and-control-flow/README.md)
+- [Chapter 3 — Functions, Libraries, and Testing](./chapter-03-functions-libraries-and-testing/README.md)
 
 *(More chapters coming soon)*
 
