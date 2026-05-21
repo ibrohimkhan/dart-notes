@@ -125,7 +125,9 @@ Default values must be compile-time constants.
 
 ### Scope
 
-Dart has lexical scope. The structure of the code determines where variables are visible.
+Scope defines where a variable can be accessed.
+
+Dart has lexical scope. This means the structure of the code determines where variables are visible.
 
 ```dart
 String globalMessage = 'Global message';
@@ -206,6 +208,8 @@ void calculate(int a, int b, Operation operation) {
   print(operation(a, b));
 }
 ```
+
+Type aliases are useful when a function type is long or used many times.
 
 ### Anonymous and arrow functions
 
@@ -463,6 +467,14 @@ Use a tear-off when an existing function already matches the expected callback s
 
 A closure is a function that remembers variables from the scope where it was created.
 
+This means a function can continue to use variables from an outer scope even after that outer function has finished executing.
+
+Main idea:
+
+> A closure is a function plus the environment it remembers.
+
+Basic example:
+
 ```dart
 int Function() makeCounter() {
   int count = 0;
@@ -482,9 +494,151 @@ void main() {
 }
 ```
 
+`makeCounter()` finishes, but the returned function still remembers `count`.
+
+#### What problem do closures solve?
+
+Closures solve this problem:
+
+> I need a function that keeps some private state or remembers some configuration.
+
+Without a closure, you often need a class just to store a small piece of state.
+
+With a closure, the state can stay inside the function that created it.
+
+```dart
+int Function() createCounter(int startFrom) {
+  var value = startFrom;
+
+  return () {
+    value++;
+    return value;
+  };
+}
+
+void main() {
+  final counterA = createCounter(0);
+  final counterB = createCounter(100);
+
+  print(counterA()); // 1
+  print(counterA()); // 2
+
+  print(counterB()); // 101
+  print(counterB()); // 102
+}
+```
+
+Each counter has its own remembered `value`.
+
+#### Closures as configured functions
+
+A closure can remember configuration and use it later.
+
+```dart
+String Function(String) addPrefix(String prefix) {
+  return (String text) {
+    return '$prefix $text';
+  };
+}
+
+void main() {
+  final addError = addPrefix('Error:');
+  final addWarning = addPrefix('Warning:');
+
+  print(addError('File not found')); // Error: File not found
+  print(addWarning('Low battery')); // Warning: Low battery
+}
+```
+
+Here, each returned function remembers a different `prefix`.
+
+#### Closures in callbacks
+
+Closures are often used when a callback needs data from the surrounding scope.
+
+```dart
+void main() {
+  final minSalary = 5000;
+  final salaries = [2000, 5000, 8000, 12000];
+
+  final highSalaries = salaries.where((salary) {
+    return salary >= minSalary;
+  }).toList();
+
+  print(highSalaries); // [5000, 8000, 12000]
+}
+```
+
+The anonymous function passed to `where()` remembers `minSalary`.
+
+#### Closures capture variables, not only values
+
+A closure can observe changes to a captured variable.
+
+```dart
+void main() {
+  var multiplier = 2;
+
+  final multiply = (int number) {
+    return number * multiplier;
+  };
+
+  print(multiply(10)); // 20
+
+  multiplier = 3;
+
+  print(multiply(10)); // 30
+}
+```
+
+The closure uses the current value of `multiplier` when it runs.
+
+#### Closure vs anonymous function
+
+| Concept | Meaning |
+| :--- | :--- |
+| Anonymous function | A function without a name |
+| Closure | A function that captures variables from an outer scope |
+
+An anonymous function can be a closure, but not every anonymous function captures something.
+
+Not a closure in practice:
+
+```dart
+final square = (int number) => number * number;
+```
+
+Closure:
+
+```dart
+final factor = 10;
+final multiply = (int number) => number * factor;
+```
+
+#### When to use closures
+
+Closures are useful when:
+
+- you need a small function with remembered state
+- you want to create configured functions
+- a callback needs variables from the surrounding scope
+- you want to avoid creating a small class too early
+- you want to keep some state private
+
+Use a class instead when the state becomes complex, has many methods, or represents a real domain object.
+
 ### Recursion
 
-Recursion is when a function calls itself. A recursive function needs a base case and a recursive case.
+Recursion is when a function calls itself.
+
+Main idea:
+
+> A recursive function solves a problem by reducing it to a smaller version of the same problem.
+
+A recursive function should always have:
+
+- base case - stops recursion
+- recursive case - calls the function again with a smaller/simpler input
 
 ```dart
 int factorial(int n) {
@@ -498,16 +652,194 @@ int factorial(int n) {
 
   return n * factorial(n - 1);
 }
+
+void main() {
+  print(factorial(5)); // 120
+}
 ```
+
+How it works:
+
+```text
+factorial(5)
+5 * factorial(4)
+5 * 4 * factorial(3)
+5 * 4 * 3 * factorial(2)
+5 * 4 * 3 * 2 * factorial(1)
+5 * 4 * 3 * 2 * 1 = 120
+```
+
+#### Base case and recursive case
+
+| Part | Example | Purpose |
+| :--- | :--- | :--- |
+| Base case | `if (n == 0 || n == 1) return 1;` | Stops recursion |
+| Recursive case | `return n * factorial(n - 1);` | Continues with a smaller problem |
+
+Without a base case, recursion can continue forever until the program crashes with a stack overflow.
+
+#### Another simple example: sum from 1 to n
+
+```dart
+int sumTo(int n) {
+  if (n <= 0) {
+    return 0;
+  }
+
+  return n + sumTo(n - 1);
+}
+
+void main() {
+  print(sumTo(5)); // 15
+}
+```
+
+#### Recursion and the call stack
+
+Each recursive call waits for the next call to finish.
+
+```text
+sumTo(3)
+3 + sumTo(2)
+3 + 2 + sumTo(1)
+3 + 2 + 1 + sumTo(0)
+3 + 2 + 1 + 0 = 6
+```
+
+This waiting chain is stored in the call stack.
+
+If recursion goes too deep, the call stack can become too large.
+
+#### Direct and indirect recursion
+
+Direct recursion: a function calls itself.
+
+```dart
+void direct(int n) {
+  if (n <= 0) return;
+  direct(n - 1);
+}
+```
+
+Indirect recursion: functions call each other.
+
+```dart
+void a(int n) {
+  if (n <= 0) return;
+  b(n - 1);
+}
+
+void b(int n) {
+  if (n <= 0) return;
+  a(n - 1);
+}
+```
+
+#### Recursion with tree-like data
+
+Recursion is especially useful for nested or tree-like structures.
+
+```dart
+class MenuItem {
+  final String title;
+  final List<MenuItem> children;
+
+  MenuItem(this.title, [this.children = const []]);
+}
+
+void printMenu(MenuItem item, [int level = 0]) {
+  final indent = '  ' * level;
+  print('$indent- ${item.title}');
+
+  for (final child in item.children) {
+    printMenu(child, level + 1);
+  }
+}
+
+void main() {
+  final menu = MenuItem('Root', [
+    MenuItem('Dashboard'),
+    MenuItem('Settings', [
+      MenuItem('Profile'),
+      MenuItem('Security'),
+    ]),
+  ]);
+
+  printMenu(menu);
+}
+```
+
+This is a natural recursive problem because each menu item can contain other menu items.
+
+#### Recursion vs loop
+
+| Use recursion when... | Use a loop when... |
+| :--- | :--- |
+| The data is nested or tree-like | The data is flat and simple |
+| The problem naturally splits into smaller similar problems | A simple `for` or `while` is easier |
+| Readability improves | Recursion would be harder to follow |
+
+Loop version of sum:
+
+```dart
+int sumToLoop(int n) {
+  var result = 0;
+
+  for (var i = 1; i <= n; i++) {
+    result += i;
+  }
+
+  return result;
+}
+```
+
+For simple numeric loops, the loop version is often easier and safer.
+
+#### Common recursion mistakes
+
+| Mistake | Problem |
+| :--- | :--- |
+| No base case | Infinite recursion |
+| Input does not get smaller | Recursion never reaches the base case |
+| Too much recursion depth | Possible stack overflow |
+| Recursion used for simple loops | Code becomes harder than necessary |
 
 ### Generator functions
 
 Generator functions produce a sequence of values.
 
-| Generator type | Return type | Keyword |
-| :--- | :--- | :--- |
-| Synchronous generator | `Iterable<T>` | `sync*` |
-| Asynchronous generator | `Stream<T>` | `async*` |
+They are useful when we do not want to create the whole collection at once.
+
+Main idea:
+
+> A generator gives values one by one, only when they are requested.
+
+Dart has two main generator types:
+
+| Generator type | Return type | Keyword | Used for |
+| :--- | :--- | :--- | :--- |
+| Synchronous generator | `Iterable<T>` | `sync*` | Normal lazy sequences |
+| Asynchronous generator | `Stream<T>` | `async*` | Values that arrive over time |
+
+#### Why generators are useful
+
+Without a generator, we often create and return a full list.
+
+```dart
+List<int> countToList(int max) {
+  final numbers = <int>[];
+
+  for (var i = 1; i <= max; i++) {
+    numbers.add(i);
+  }
+
+  return numbers;
+}
+```
+
+This creates the entire list before the caller can use it.
+
+With a generator:
 
 ```dart
 Iterable<int> countTo(int max) sync* {
@@ -517,6 +849,179 @@ Iterable<int> countTo(int max) sync* {
 }
 ```
 
+The values are produced lazily.
+
+```dart
+void main() {
+  for (final number in countTo(3)) {
+    print(number);
+  }
+}
+```
+
+Output:
+
+```text
+1
+2
+3
+```
+
+#### `sync*` and `yield`
+
+A synchronous generator uses `sync*` and returns `Iterable<T>`.
+
+```dart
+Iterable<int> evenNumbersUpTo(int max) sync* {
+  for (var i = 0; i <= max; i++) {
+    if (i.isEven) {
+      yield i;
+    }
+  }
+}
+
+void main() {
+  print(evenNumbersUpTo(10).toList()); // [0, 2, 4, 6, 8, 10]
+}
+```
+
+`yield` produces one value and then pauses the generator until the next value is requested.
+
+#### Lazy evaluation
+
+Generators are lazy. The body does not run until the iterable is actually used.
+
+```dart
+Iterable<int> numbers() sync* {
+  print('Generator started');
+
+  yield 1;
+  print('After 1');
+
+  yield 2;
+  print('After 2');
+}
+
+void main() {
+  final iterable = numbers();
+
+  print('Before iteration');
+
+  for (final value in iterable) {
+    print('Value: $value');
+  }
+}
+```
+
+Possible output:
+
+```text
+Before iteration
+Generator started
+Value: 1
+After 1
+Value: 2
+After 2
+```
+
+The generator starts only when the `for` loop begins.
+
+#### `yield*`
+
+`yield*` delegates generation to another iterable or generator.
+
+```dart
+Iterable<int> firstPart() sync* {
+  yield 1;
+  yield 2;
+}
+
+Iterable<int> secondPart() sync* {
+  yield 3;
+  yield 4;
+}
+
+Iterable<int> allNumbers() sync* {
+  yield* firstPart();
+  yield* secondPart();
+}
+
+void main() {
+  print(allNumbers().toList()); // [1, 2, 3, 4]
+}
+```
+
+Use `yield*` when one generator should include all values from another sequence.
+
+#### Recursive generators
+
+Generators work very well with recursion.
+
+```dart
+class MenuItem {
+  final String title;
+  final List<MenuItem> children;
+
+  MenuItem(this.title, [this.children = const []]);
+}
+
+Iterable<String> flattenMenu(MenuItem item) sync* {
+  yield item.title;
+
+  for (final child in item.children) {
+    yield* flattenMenu(child);
+  }
+}
+
+void main() {
+  final menu = MenuItem('Root', [
+    MenuItem('Dashboard'),
+    MenuItem('Settings', [
+      MenuItem('Profile'),
+      MenuItem('Security'),
+    ]),
+  ]);
+
+  print(flattenMenu(menu).toList());
+  // [Root, Dashboard, Settings, Profile, Security]
+}
+```
+
+This is powerful because the function can walk through nested data and produce values one by one.
+
+#### Infinite generators
+
+Because generators are lazy, they can represent infinite sequences.
+
+```dart
+Iterable<int> naturalNumbers() sync* {
+  var number = 1;
+
+  while (true) {
+    yield number;
+    number++;
+  }
+}
+
+void main() {
+  final firstFive = naturalNumbers().take(5).toList();
+  print(firstFive); // [1, 2, 3, 4, 5]
+}
+```
+
+Important: never convert an infinite generator directly to a list without limiting it.
+
+```dart
+// Danger: this never ends.
+// final allNumbers = naturalNumbers().toList();
+```
+
+#### `async*` and Stream
+
+An asynchronous generator uses `async*` and returns `Stream<T>`.
+
+It is useful when values arrive over time.
+
 ```dart
 Stream<int> countWithDelay(int max) async* {
   for (var i = 1; i <= max; i++) {
@@ -524,9 +1029,90 @@ Stream<int> countWithDelay(int max) async* {
     yield i;
   }
 }
+
+Future<void> main() async {
+  await for (final number in countWithDelay(3)) {
+    print(number);
+  }
+}
 ```
 
-`yield` produces one value. `yield*` delegates generation to another generator or iterable.
+`await for` listens to the stream and processes values as they arrive.
+
+#### `yield*` with streams
+
+`yield*` can also delegate to another stream inside an `async*` generator.
+
+```dart
+Stream<String> firstMessages() async* {
+  yield 'Hello';
+  yield 'How are you?';
+}
+
+Stream<String> secondMessages() async* {
+  yield 'Goodbye';
+}
+
+Stream<String> allMessages() async* {
+  yield* firstMessages();
+  yield* secondMessages();
+}
+```
+
+#### `yield` vs `return`
+
+| Keyword | Meaning in a generator |
+| :--- | :--- |
+| `yield` | Produces one value and continues later |
+| `yield*` | Produces all values from another sequence |
+| `return` | Stops the generator |
+
+Example:
+
+```dart
+Iterable<int> numbersUntilThree() sync* {
+  yield 1;
+  yield 2;
+  return;
+  // yield 3; // Unreachable
+}
+```
+
+#### Generator vs List
+
+| Use a generator when... | Use a list when... |
+| :--- | :--- |
+| Values can be produced one by one | You already have all values |
+| The sequence may be large | The collection is small |
+| You want lazy evaluation | You need random access by index |
+| You may stop early | You need to store and reuse all values |
+
+Example where generator is useful:
+
+```dart
+Iterable<int> findDivisors(int number) sync* {
+  for (var i = 1; i <= number; i++) {
+    if (number % i == 0) {
+      yield i;
+    }
+  }
+}
+
+void main() {
+  final divisors = findDivisors(28);
+  print(divisors.toList()); // [1, 2, 4, 7, 14, 28]
+}
+```
+
+#### Common generator mistakes
+
+| Mistake | Problem |
+| :--- | :--- |
+| Forgetting `sync*` | You cannot use `yield` in a normal function |
+| Returning `List<T>` from `sync*` | `sync*` should return `Iterable<T>` |
+| Calling `toList()` too early | You lose laziness |
+| Infinite generator without `take()` | Program may never finish |
+| Using `async*` when values are not asynchronous | Adds unnecessary complexity |
 
 ---
 
@@ -1361,8 +1947,14 @@ dart pub get
 | Arrow function | Compact syntax for a function with one expression |
 | Tear-off | Passing an existing function directly instead of wrapping it in an anonymous function |
 | Closure | Function that remembers variables from outer scope |
-| Recursion | Function calling itself |
-| Generator function | Function that produces a sequence of values |
+| Recursion | Function calling itself with a smaller version of the same problem |
+| Base case | Condition that stops recursion |
+| Recursive case | Part that continues recursion |
+| Generator function | Function that produces a sequence of values lazily |
+| `sync*` | Creates a synchronous generator that returns `Iterable<T>` |
+| `async*` | Creates an asynchronous generator that returns `Stream<T>` |
+| `yield` | Produces one value from a generator |
+| `yield*` | Delegates generation to another iterable or stream |
 | Library | A Dart file and its parts; a unit of privacy |
 | Package | A Dart project with `pubspec.yaml` |
 | `bin/` | Runnable app entry points |
@@ -1399,8 +1991,14 @@ dart pub get
 - Use named functions when logic is complex, reused, or should be tested separately.
 - Use tear-offs when an existing function already matches the expected callback signature.
 - Closures can remember variables from outer scopes.
-- Recursion needs a base case.
+- Closures are useful for private state, configured functions, and callbacks that need surrounding variables.
+- Recursion needs a base case and a recursive case.
+- Recursion is useful for nested or tree-like data, but simple loops are often better for flat data.
 - Generator functions can produce values lazily using `yield`.
+- `sync*` returns `Iterable<T>` and is used for normal lazy sequences.
+- `async*` returns `Stream<T>` and is used for values that arrive over time.
+- `yield*` is useful when one generator delegates to another sequence.
+- Do not call `toList()` too early if you want to keep generator laziness.
 - Every Dart file is a library.
 - Identifiers that start with `_` are library-private.
 - `lib/src/` is for internal implementation files.
