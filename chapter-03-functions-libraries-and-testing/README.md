@@ -1,44 +1,40 @@
-# Chapter 3 — Functions, Libraries, and Testing
+# Chapter 3 - Functions, Libraries, Packages, and Testing
 
-## 🧩 Functions in Dart
+This chapter explains how Dart code is organized and verified:
+
+- functions: reusable blocks of logic
+- libraries: Dart files that expose or hide code
+- packages: reusable Dart projects with `pubspec.yaml`
+- tests: automated checks that prove code works correctly
+
+Main idea:
+
+> Write small functions, organize them into clean libraries/packages, and protect them with tests.
+
+---
+
+## Contents
+
+- [3.1. Functions in Dart](#31-functions-in-dart)
+- [3.2. Creating and Importing Libraries](#32-creating-and-importing-libraries)
+- [3.3. Testing Functions](#33-testing-functions)
+- [3.4. Creating and Connecting Packages](#34-creating-and-connecting-packages)
+- [Summary](#summary)
+- [Key Takeaways](#key-takeaways)
+- [Useful References](#useful-references)
+
+---
+
+## 3.1. Functions in Dart
 
 A function is a reusable block of code that performs a specific task.
 
-In Dart, functions are **objects**. This means a function can be:
+In Dart, functions are objects. This means a function can be:
 
 - assigned to a variable
 - passed as an argument to another function
 - returned from another function
 - stored in collections
-
-Functions help make code more readable, reusable, and easier to test.
-
----
-
-## 📚 Contents
-
-- [3.1.1. Declaring Function Parameters](#311-declaring-function-parameters)
-- [3.1.2. Optional Parameters and Default Values](#312-optional-parameters-and-default-values)
-- [3.1.3. Variable Scope](#313-variable-scope)
-- [3.1.4. Calling a Function Through a Variable](#314-calling-a-function-through-a-variable)
-- [3.1.5. Function as an Argument of Another Function](#315-function-as-an-argument-of-another-function)
-- [3.1.6. Type Aliases](#316-type-aliases)
-- [3.1.7. Anonymous and Arrow Functions](#317-anonymous-and-arrow-functions)
-- [3.1.8. Closures](#318-closures)
-- [3.1.9. Recursion](#319-recursion)
-- [3.1.10. Generator Functions](#3110-generator-functions)
-- [Summary](#-summary)
-
----
-
-## 3.1.1. Declaring Function Parameters
-
-A basic function usually has:
-
-- a return type
-- a function name
-- parameters
-- a function body
 
 ```dart
 int add(int a, int b) {
@@ -50,16 +46,9 @@ void main() {
 }
 ```
 
-In this example:
-
-- `int` is the return type
-- `add` is the function name
-- `int a` and `int b` are parameters
-- `return a + b;` returns the result
-
 ### Required positional parameters
 
-The most basic parameters in Dart are **required positional parameters**.
+Required positional parameters must be passed in the correct order.
 
 ```dart
 void greet(String name, int age) {
@@ -71,57 +60,9 @@ void main() {
 }
 ```
 
-Required positional parameters have two important rules:
-
-- they must be passed
-- their order matters
-
-```dart
-greet('Anna', 27); // OK
-// greet(27, 'Anna'); // Error: wrong argument order
-```
-
----
-
-## 3.1.2. Optional Parameters and Default Values
-
-Dart supports two main kinds of optional parameters:
-
-| Parameter type | Syntax | Example |
-| :--- | :--- | :--- |
-| Optional positional | `[]` | `void greet(String name, [String? message])` |
-| Named | `{}` | `void createUser({required String name})` |
-
-> 💡 A function can use required positional parameters with optional positional parameters, or required positional parameters with named parameters. However, optional positional parameters and named parameters cannot be mixed in the same function signature.
-
----
-
 ### Optional positional parameters
 
 Optional positional parameters are written inside square brackets `[]`.
-
-```dart
-void greet(String name, [String? message]) {
-  print('Hello, $name');
-
-  if (message != null) {
-    print(message);
-  }
-}
-
-void main() {
-  greet('Anna');
-  greet('Anna', 'Welcome back!');
-}
-```
-
-If an optional parameter has no default value, its value is `null`. That is why `message` is declared as `String?`.
-
----
-
-### Optional positional parameters with default values
-
-Optional parameters can have default values.
 
 ```dart
 void greet(String name, [String message = 'Welcome!']) {
@@ -129,14 +70,18 @@ void greet(String name, [String message = 'Welcome!']) {
 }
 
 void main() {
-  greet('Anna'); // Hello, Anna. Welcome!
-  greet('Max', 'Good morning!'); // Hello, Max. Good morning!
+  greet('Anna');
+  greet('Max', 'Good morning!');
 }
 ```
 
-If the second argument is not passed, Dart uses the default value.
+If an optional positional parameter has no default value, it must be nullable.
 
----
+```dart
+void greet(String name, [String? message]) {
+  print(message);
+}
+```
 
 ### Named parameters
 
@@ -153,77 +98,34 @@ void main() {
 }
 ```
 
-Named parameters make function calls easier to read because the argument names are visible at the call site.
-
-```dart
-createUser(name: 'Anna', age: 27);
-```
-
-This is especially useful when a function has many parameters.
-
----
-
-### Required named parameters
-
-Named parameters are optional by default. To make a named parameter required, use the `required` keyword.
+Named parameters are optional by default. To make them required, use `required`.
 
 ```dart
 void connect({required String host, required int port}) {
   print('Connecting to $host:$port');
 }
-
-void main() {
-  connect(host: 'localhost', port: 5432);
-}
 ```
 
-Without `required`, a named parameter must either be nullable or have a default value.
+Valid parameter combinations:
 
 ```dart
-void example({String? name, int age = 18}) {
-  print('$name $age');
-}
-```
-
----
-
-### Important parameter rules
-
-Valid examples:
-
-```dart
-// Required positional parameters only
 void example1(String name, int age) {}
-
-// Required positional + optional positional
 void example2(String name, [int age = 18]) {}
-
-// Required positional + named parameters
 void example3(String name, {int age = 18}) {}
 ```
 
-Invalid example:
+Invalid combination:
 
 ```dart
-// Error: optional positional and named parameters cannot be mixed
+// Error: optional positional and named parameters cannot be mixed.
 void wrong(String name, [int age = 18], {String city = 'Dushanbe'}) {}
 ```
 
 Default values must be compile-time constants.
 
-```dart
-void printMessage([String message = 'Hello']) {
-  print(message);
-}
-```
+### Scope
 
----
-
-## 3.1.3. Variable Scope
-
-Scope defines where a variable can be accessed.
-
-Dart has **lexical scope**. This means that the structure of the code determines where variables are visible.
+Dart has lexical scope. The structure of the code determines where variables are visible.
 
 ```dart
 String globalMessage = 'Global message';
@@ -243,73 +145,39 @@ void main() {
 }
 ```
 
-The inner function can access variables from outer scopes.
+Inner scopes can access outer variables, but outer scopes cannot access variables declared inside inner scopes.
 
-However, outer scopes cannot access variables declared inside inner scopes.
+### Function variables
 
-```dart
-void main() {
-  void innerFunction() {
-    String message = 'Hello';
-  }
-
-  // print(message); // Error: message is not visible here
-}
-```
-
-> 💡 Inner scopes can see outer variables, but outer scopes cannot see inner variables.
-
----
-
-## 3.1.4. Calling a Function Through a Variable
-
-Because functions are objects, a function can be assigned to a variable.
-
-```dart
-int add(int a, int b) {
-  return a + b;
-}
-
-void main() {
-  var operation = add;
-
-  print(operation(5, 3)); // 8
-}
-```
-
-Dart understands that `operation` stores a function.
-
-For better readability, an explicit function type can be used.
+Because functions are objects, they can be stored in variables.
 
 ```dart
 int add(int a, int b) => a + b;
 
 void main() {
-  int Function(int, int) operation = add;
-
-  print(operation(10, 5)); // 15
+  var operation = add;
+  print(operation(5, 3)); // 8
 }
 ```
 
-The type `int Function(int, int)` means:
-
-- the function returns `int`
-- the function accepts two `int` arguments
-
----
-
-## 3.1.5. Function as an Argument of Another Function
-
-A function can be passed as an argument to another function.
+Explicit function type:
 
 ```dart
-void printResult(int value) {
-  print('Result: $value');
-}
+int Function(int, int) operation = add;
+```
 
+### Function as an argument
+
+A function can be passed into another function.
+
+```dart
 void calculate(int a, int b, void Function(int) callback) {
   final result = a + b;
   callback(result);
+}
+
+void printResult(int value) {
+  print('Result: $value');
 }
 
 void main() {
@@ -317,42 +185,16 @@ void main() {
 }
 ```
 
-Here, `printResult` is passed into `calculate` as a callback function.
-
-This idea is common in Dart collections.
+This is common in collections:
 
 ```dart
-void main() {
-  final numbers = [1, 2, 3, 4];
-
-  numbers.forEach(print);
-}
+final numbers = [1, 2, 3, 4, 5, 6];
+final evenNumbers = numbers.where((number) => number.isEven).toList();
 ```
 
-In this example, `print` is passed to `forEach` as a function argument.
+### Type aliases
 
-Another example with `where`:
-
-```dart
-bool isEven(int number) {
-  return number.isEven;
-}
-
-void main() {
-  final numbers = [1, 2, 3, 4, 5, 6];
-  final evenNumbers = numbers.where(isEven).toList();
-
-  print(evenNumbers); // [2, 4, 6]
-}
-```
-
----
-
-## 3.1.6. Type Aliases
-
-A type alias gives another name to an existing type.
-
-For function types, Dart commonly uses `typedef`.
+`typedef` creates a readable name for a type.
 
 ```dart
 typedef Operation = int Function(int a, int b);
@@ -363,127 +205,29 @@ int multiply(int a, int b) => a * b;
 void calculate(int a, int b, Operation operation) {
   print(operation(a, b));
 }
-
-void main() {
-  calculate(5, 3, add);      // 8
-  calculate(5, 3, multiply); // 15
-}
 ```
 
-Without `typedef`, the function type can be harder to read.
+### Anonymous and arrow functions
+
+Anonymous function:
 
 ```dart
-void calculate(int a, int b, int Function(int, int) operation) {
-  print(operation(a, b));
-}
+final numbers = [1, 2, 3];
+
+numbers.forEach((number) {
+  print(number);
+});
 ```
 
-With `typedef`, the code is cleaner.
-
-```dart
-typedef Operation = int Function(int, int);
-
-void calculate(int a, int b, Operation operation) {
-  print(operation(a, b));
-}
-```
-
-Type aliases are useful when:
-
-- a function type is long
-- the same type is used many times
-- we want to make code more expressive
-
----
-
-## 3.1.7. Anonymous and Arrow Functions
-
-### Anonymous functions
-
-An anonymous function is a function without a name.
-
-```dart
-void main() {
-  final numbers = [1, 2, 3];
-
-  numbers.forEach((number) {
-    print(number);
-  });
-}
-```
-
-Anonymous functions are often used with collection methods such as:
-
-- `forEach`
-- `map`
-- `where`
-- `reduce`
-- `fold`
-
-Example with `map`:
-
-```dart
-void main() {
-  final numbers = [1, 2, 3];
-
-  final doubled = numbers.map((number) {
-    return number * 2;
-  }).toList();
-
-  print(doubled); // [2, 4, 6]
-}
-```
-
----
-
-### Arrow functions
-
-If a function contains only one expression, it can be written using arrow syntax `=>`.
+Arrow function:
 
 ```dart
 int square(int number) => number * number;
 ```
 
-This is the same as:
+Arrow syntax `=>` is used only for a single expression.
 
-```dart
-int square(int number) {
-  return number * number;
-}
-```
-
-Arrow functions are very common with collections.
-
-```dart
-void main() {
-  final numbers = [1, 2, 3];
-
-  final doubled = numbers.map((number) => number * 2).toList();
-
-  print(doubled); // [2, 4, 6]
-}
-```
-
-> 💡 After `=>`, Dart expects a single expression, not a block of statements.
-
-Correct:
-
-```dart
-int add(int a, int b) => a + b;
-```
-
-Incorrect:
-
-```dart
-// Error
-int add(int a, int b) => {
-  return a + b;
-};
-```
-
----
-
-## 3.1.8. Closures
+### Closures
 
 A closure is a function that remembers variables from the scope where it was created.
 
@@ -506,40 +250,9 @@ void main() {
 }
 ```
 
-Even after `makeCounter()` finishes, the returned function still remembers the variable `count`.
+### Recursion
 
-Closures are useful when we need to keep private internal state.
-
-Another example:
-
-```dart
-String Function(String) addPrefix(String prefix) {
-  return (String text) => '$prefix $text';
-}
-
-void main() {
-  final addError = addPrefix('Error:');
-
-  print(addError('File not found')); // Error: File not found
-}
-```
-
-Here, the returned anonymous function remembers the `prefix` variable.
-
----
-
-## 3.1.9. Recursion
-
-Recursion is when a function calls itself.
-
-A recursive function should always have:
-
-- a base case
-- a recursive case
-
-The base case stops the recursion. Without it, the function may call itself forever.
-
-Example: factorial.
+Recursion is when a function calls itself. A recursive function needs a base case and a recursive case.
 
 ```dart
 int factorial(int n) {
@@ -553,59 +266,16 @@ int factorial(int n) {
 
   return n * factorial(n - 1);
 }
-
-void main() {
-  print(factorial(5)); // 120
-}
 ```
 
-How it works:
-
-```text
-factorial(5)
-5 * factorial(4)
-5 * 4 * factorial(3)
-5 * 4 * 3 * factorial(2)
-5 * 4 * 3 * 2 * factorial(1)
-5 * 4 * 3 * 2 * 1 = 120
-```
-
-Another example: sum of numbers from `1` to `n`.
-
-```dart
-int sumTo(int n) {
-  if (n <= 0) {
-    return 0;
-  }
-
-  return n + sumTo(n - 1);
-}
-
-void main() {
-  print(sumTo(5)); // 15
-}
-```
-
-> 💡 Recursion is useful when a problem can be divided into smaller versions of the same problem.
-
----
-
-## 3.1.10. Generator Functions
+### Generator functions
 
 Generator functions produce a sequence of values.
-
-Dart has two main generator types:
 
 | Generator type | Return type | Keyword |
 | :--- | :--- | :--- |
 | Synchronous generator | `Iterable<T>` | `sync*` |
 | Asynchronous generator | `Stream<T>` | `async*` |
-
----
-
-### Synchronous generator
-
-A synchronous generator returns an `Iterable`.
 
 ```dart
 Iterable<int> countTo(int max) sync* {
@@ -613,33 +283,7 @@ Iterable<int> countTo(int max) sync* {
     yield i;
   }
 }
-
-void main() {
-  final numbers = countTo(5);
-
-  for (final number in numbers) {
-    print(number);
-  }
-}
 ```
-
-Output:
-
-```text
-1
-2
-3
-4
-5
-```
-
-The `yield` keyword produces one value at a time.
-
----
-
-### Asynchronous generator
-
-An asynchronous generator returns a `Stream`.
 
 ```dart
 Stream<int> countWithDelay(int max) async* {
@@ -648,56 +292,828 @@ Stream<int> countWithDelay(int max) async* {
     yield i;
   }
 }
-
-Future<void> main() async {
-  await for (final number in countWithDelay(3)) {
-    print(number);
-  }
-}
 ```
 
-Output:
-
-```text
-1
-2
-3
-```
-
-Each value is produced asynchronously.
+`yield` produces one value. `yield*` delegates generation to another generator or iterable.
 
 ---
 
-### `yield*`
+## 3.2. Creating and Importing Libraries
 
-The `yield*` keyword delegates generation to another generator or iterable.
+A library is a unit of Dart code.
+
+Important rule:
+
+> Every Dart file is a library, even if it does not contain the `library` keyword.
+
+Dart does not use `public`, `private`, or `protected` like Java/Kotlin. Instead, Dart uses `_` for library-private members.
 
 ```dart
-Iterable<int> firstPart() sync* {
-  yield 1;
-  yield 2;
-}
+int publicValue = 10;
+int _privateValue = 20;
+```
 
-Iterable<int> secondPart() sync* {
-  yield 3;
-  yield 4;
-}
+`_privateValue` is visible only inside the same library.
 
-Iterable<int> allNumbers() sync* {
-  yield* firstPart();
-  yield* secondPart();
+### Project structure: bin, lib, src, and test
+
+A typical Dart project can look like this:
+
+```text
+conquest_functions/
+  bin/
+    main.dart
+  lib/
+    conquest_functions.dart
+    src/
+      my_math.dart
+      my_str.dart
+  test/
+    my_functions_test.dart
+  pubspec.yaml
+  pubspec.lock
+  README.md
+```
+
+| Directory/File | Purpose |
+| :--- | :--- |
+| `bin/` | Entry points for command-line apps. Usually contains `main.dart`. |
+| `lib/` | Public library code of the package. Other packages can import files from here. |
+| `lib/src/` | Internal implementation files. Users of your package should not import this directly. |
+| `test/` | Test files. Usually files end with `_test.dart`. |
+| `pubspec.yaml` | Project/package configuration: name, SDK, dependencies, dev dependencies. |
+| `pubspec.lock` | Resolved dependency versions. |
+
+### bin
+
+`bin/` is usually used for runnable programs.
+
+```dart
+// bin/main.dart
+import 'package:conquest_functions/conquest_functions.dart';
+
+void main() {
+  print(add(2, 3));
+}
+```
+
+Run:
+
+```bash
+dart run
+```
+
+or:
+
+```bash
+dart run bin/main.dart
+```
+
+### lib and src
+
+`lib/` contains code that belongs to the package. Files directly inside `lib/` are usually public API files.
+
+```dart
+// lib/conquest_functions.dart
+export 'src/my_math.dart';
+export 'src/my_str.dart';
+```
+
+`lib/src/` is for internal implementation.
+
+```dart
+// lib/src/my_math.dart
+int add(int a, int b) => a + b;
+int sub(int a, int b) => a - b;
+int mul(int a, int b) => a * b;
+```
+
+Avoid this in external packages:
+
+```dart
+import 'package:conquest_functions/src/my_math.dart';
+```
+
+Prefer this:
+
+```dart
+import 'package:conquest_functions/conquest_functions.dart';
+```
+
+### Importing Dart files
+
+`import` allows one Dart file to use code from another library.
+
+| Import style | Example | When to use |
+| :--- | :--- | :--- |
+| SDK library | `import 'dart:math';` | Built-in Dart libraries |
+| Package import | `import 'package:test/test.dart';` | Code from packages |
+| Relative import | `import 'src/my_math.dart';` | Files inside the same package |
+
+Import from Dart SDK:
+
+```dart
+import 'dart:math';
+
+void main() {
+  print(max(10, 20));
+}
+```
+
+`dart:core` is imported automatically, so `String`, `int`, `List`, `Map`, and `print` are available without import.
+
+Import with prefix:
+
+```dart
+import 'dart:math' as math;
+
+void main() {
+  print(math.max(10, 20));
+}
+```
+
+Use `as` when two libraries have conflicting names or when you want a clearer namespace.
+
+### Exporting public API
+
+`export` re-exports code from another file.
+
+Instead of forcing users to import many files:
+
+```dart
+import 'package:conquest_functions/src/my_math.dart';
+import 'package:conquest_functions/src/my_str.dart';
+```
+
+Create one public API file:
+
+```dart
+// lib/conquest_functions.dart
+export 'src/my_math.dart';
+export 'src/my_str.dart';
+```
+
+Now users write one clean import:
+
+```dart
+import 'package:conquest_functions/conquest_functions.dart';
+```
+
+Why `export` is useful:
+
+| Without export | With export |
+| :--- | :--- |
+| Many imports in user code | One clean import |
+| Internal structure is exposed | Internal structure is hidden |
+| Harder to refactor | Easier to refactor |
+
+### show and hide
+
+`show` and `hide` allow importing or exporting only part of a library.
+
+`show` imports only selected names:
+
+```dart
+import 'dart:math' show max;
+
+void main() {
+  print(max(10, 20));
+  // print(min(10, 20)); // Error
+}
+```
+
+`hide` imports everything except selected names:
+
+```dart
+import 'dart:math' hide Random;
+
+void main() {
+  print(max(10, 20));
+  // final random = Random(); // Error
+}
+```
+
+They also work with `export`:
+
+```dart
+// lib/conquest_functions.dart
+export 'src/my_math.dart' show add, sub, mul;
+export 'src/my_str.dart' show toUpper, toLower;
+```
+
+This means only these names become public through `conquest_functions.dart`.
+
+### Deferred imports
+
+A deferred import loads a library only when it is needed.
+
+```dart
+import 'package:greetings/hello.dart' deferred as hello;
+
+Future<void> greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+```
+
+Deferred loading is mainly useful for web apps when some code is rarely used and should not increase initial startup size. For normal beginner CLI apps, deferred imports are usually not needed.
+
+---
+
+## 3.3. Testing Functions
+
+Testing means checking that your code works as expected.
+
+Instead of manually running the program and looking at printed output, we write tests that automatically verify the result.
+
+```dart
+expect(add(2, 3), equals(5));
+```
+
+This means: I expect `add(2, 3)` to return `5`.
+
+If the result is `5`, the test passes. If the result is different, the test fails.
+
+### Why tests are useful
+
+Tests help us:
+
+- catch bugs earlier
+- change code with more confidence
+- document expected behavior
+- protect code from regressions
+- make functions easier to design
+
+Manual check:
+
+```dart
+void main() {
+  print(add(2, 3)); // You look at the console manually.
+}
+```
+
+Automated test:
+
+```dart
+test('add returns sum of two numbers', () {
+  expect(add(2, 3), equals(5));
+});
+```
+
+### Installing the test package
+
+Add `test` as a dev dependency:
+
+```bash
+dart pub add dev:test
+```
+
+This updates `pubspec.yaml`:
+
+```yaml
+dev_dependencies:
+  test: ^1.31.1
+```
+
+The exact version can be different. Pub chooses a compatible version.
+
+Import it in test files:
+
+```dart
+import 'package:test/test.dart';
+```
+
+### Writing tests
+
+Test files usually live in the `test/` directory and end with `_test.dart`.
+
+Source code:
+
+```dart
+// lib/src/my_math.dart
+int add(int a, int b) => a + b;
+int sub(int a, int b) => a - b;
+int mul(int a, int b) => a * b;
+
+int powInt(int base, int exponent) {
+  var result = 1;
+
+  for (var i = 0; i < exponent; i++) {
+    result *= base;
+  }
+
+  return result;
+}
+```
+
+Test file:
+
+```dart
+// test/my_functions_test.dart
+import 'package:test/test.dart';
+import 'package:conquest_functions/conquest_functions.dart';
+
+void main() {
+  test('Check addition', () {
+    expect(add(2, 3), equals(5));
+  });
+
+  test('Check subtraction', () {
+    expect(sub(2, 3), equals(-1));
+  });
+
+  test('Check multiplication', () {
+    expect(mul(2, 3), equals(6));
+  });
+
+  test('Check power', () {
+    expect(powInt(2, 3), equals(8));
+  });
+}
+```
+
+Basic testing structure:
+
+```dart
+test('description', () {
+  expect(actualValue, matcher);
+});
+```
+
+| Part | Meaning |
+| :--- | :--- |
+| `test()` | Defines one test case |
+| `description` | Human-readable test name |
+| `expect()` | Checks actual result |
+| `equals()` | Matcher for expected value |
+
+Common matchers:
+
+| Matcher | Meaning |
+| :--- | :--- |
+| `equals(value)` | Must be equal to `value` |
+| `isTrue` | Must be `true` |
+| `isFalse` | Must be `false` |
+| `isNull` | Must be `null` |
+| `isNotNull` | Must not be `null` |
+| `throwsA(...)` | Must throw an error/exception |
+
+Example with `throwsA`:
+
+```dart
+int divide(int a, int b) {
+  if (b == 0) {
+    throw ArgumentError('b must not be zero');
+  }
+
+  return a ~/ b;
 }
 
 void main() {
-  print(allNumbers().toList()); // [1, 2, 3, 4]
+  test('divide throws when b is zero', () {
+    expect(() => divide(10, 0), throwsA(isA<ArgumentError>()));
+  });
 }
 ```
 
-`yield*` is useful when one generator needs to include values from another generator.
+For errors, pass a function to `expect`: `() => divide(10, 0)`.
+
+### Grouping tests
+
+`group()` organizes related tests.
+
+```dart
+void main() {
+  group('Arithmetic operations', () {
+    test('Check addition', () {
+      expect(add(2, 3), equals(5));
+    });
+
+    test('Check subtraction', () {
+      expect(sub(2, 3), equals(-1));
+    });
+  });
+
+  group('String manipulations', () {
+    test('String to lower case', () {
+      expect('HELLO'.toLowerCase(), equals('hello'));
+    });
+  });
+}
+```
+
+Grouping makes output easier to read and allows shared setup inside a group.
+
+### setUp and tearDown
+
+`setUp()` runs before each test in the current group or file. `tearDown()` runs after each test.
+
+```dart
+void main() {
+  group('Arithmetic operations', () {
+    late int a;
+    late int b;
+
+    setUp(() {
+      a = 2;
+      b = 3;
+    });
+
+    test('Check addition', () {
+      expect(add(a, b), equals(5));
+    });
+  });
+}
+```
+
+Use `tearDown()` when tests need cleanup: close files, close servers, clear temporary data, reset global state, or close connections.
+
+```dart
+import 'dart:io';
+import 'package:test/test.dart';
+
+void main() {
+  late Directory tempDir;
+
+  setUp(() async {
+    tempDir = await Directory.systemTemp.createTemp('my_test_');
+  });
+
+  tearDown(() async {
+    if (await tempDir.exists()) {
+      await tempDir.delete(recursive: true);
+    }
+  });
+
+  test('temporary directory exists', () async {
+    expect(await tempDir.exists(), isTrue);
+  });
+}
+```
+
+| Function | Runs |
+| :--- | :--- |
+| `setUp()` | Before each test |
+| `tearDown()` | After each test |
+| `setUpAll()` | Once before all tests in the group/file |
+| `tearDownAll()` | Once after all tests in the group/file |
+
+### Skipping tests
+
+Skip one test:
+
+```dart
+test(
+  'Check power',
+  () {
+    expect(powInt(2, 3), equals(8));
+  },
+  skip: 'Power function is not implemented yet',
+);
+```
+
+Skip a group:
+
+```dart
+group(
+  'String manipulations',
+  () {
+    test('String to lower case', () {
+      expect('HELLO'.toLowerCase(), equals('hello'));
+    });
+  },
+  skip: 'String manipulation tests are currently skipped',
+);
+```
+
+| Syntax | Meaning |
+| :--- | :--- |
+| `skip: true` | Skip without a detailed reason |
+| `skip: 'reason'` | Skip and print the reason |
+
+It is better to write a reason.
+
+### Tags
+
+Tags are labels for tests. They help run only a subset of tests.
+
+```dart
+void main() {
+  test(
+    'fast unit test',
+    () {
+      expect(2 + 2, equals(4));
+    },
+    tags: ['unit', 'fast'],
+  );
+
+  test(
+    'slow integration test',
+    () {
+      expect(true, isTrue);
+    },
+    tags: ['integration', 'slow'],
+  );
+}
+```
+
+Run only tests with the `unit` tag:
+
+```bash
+dart test -t unit
+```
+
+Exclude slow tests:
+
+```bash
+dart test -x slow
+```
+
+Run tests using a boolean tag expression:
+
+```bash
+dart test -t "unit && !slow"
+```
+
+Tags can also be used on groups.
+
+Optional `dart_test.yaml` example:
+
+```yaml
+# dart_test.yaml
+tags:
+  slow:
+    timeout: 2x
+```
+
+### onPlatform
+
+`onPlatform` allows different test behavior for different platforms.
+
+```dart
+import 'package:test/test.dart';
+
+void main() {
+  test(
+    'platform-specific test',
+    () {
+      expect(true, isTrue);
+    },
+    onPlatform: {
+      'windows': Skip('Temporarily skipped on Windows'),
+    },
+  );
+}
+```
+
+Another example:
+
+```dart
+test(
+  'slow browser test',
+  () async {
+    await Future.delayed(Duration(seconds: 1));
+    expect(true, isTrue);
+  },
+  onPlatform: {
+    'chrome': Timeout.factor(2),
+    'safari': Skip('Safari is currently not supported'),
+  },
+);
+```
+
+Common platform selectors:
+
+| Selector | Meaning |
+| :--- | :--- |
+| `vm` | Dart VM |
+| `chrome` | Google Chrome |
+| `firefox` | Firefox |
+| `safari` | Safari |
+| `browser` | Any browser |
+| `windows` | Windows |
+| `mac-os` | macOS |
+| `linux` | Linux |
+| `posix` | POSIX systems, usually not Windows |
+
+You can restrict a whole test file using `@TestOn`.
+
+```dart
+@TestOn('vm')
+
+import 'package:test/test.dart';
+
+void main() {
+  test('runs only on Dart VM', () {
+    expect(true, isTrue);
+  });
+}
+```
+
+### Running tests
+
+Run all tests in the `test/` directory:
+
+```bash
+dart test
+```
+
+Run one file:
+
+```bash
+dart test test/my_functions_test.dart
+```
+
+Run tests by name:
+
+```bash
+dart test -n "Check addition"
+```
+
+Run tests with a tag:
+
+```bash
+dart test -t unit
+```
+
+Exclude tests with a tag:
+
+```bash
+dart test -x slow
+```
+
+Run tests on a specific platform:
+
+```bash
+dart test -p vm
+```
+
+Show expanded output:
+
+```bash
+dart test --reporter expanded
+```
+
+Collect coverage:
+
+```bash
+dart run test --coverage-path=coverage/lcov.info
+```
+
+`dart test` automatically looks for `*_test.dart` files inside the `test/` directory.
 
 ---
 
-## ✅ Summary
+## 3.4. Creating and Connecting Packages
+
+A package is a reusable Dart project. The key file is `pubspec.yaml`.
+
+A package can contain:
+
+- libraries
+- command-line apps
+- tests
+- examples
+- documentation
+- dependencies
+
+### Package vs library
+
+| Concept | Meaning |
+| :--- | :--- |
+| Library | One Dart file and its parts. It controls imports and privacy. |
+| Package | A project with `pubspec.yaml`. It can contain many libraries. |
+
+A package can have many library files:
+
+```text
+lib/
+  conquest_functions.dart
+  calc.dart
+  src/
+    my_math.dart
+    my_str.dart
+```
+
+Each `.dart` file is a library, but the whole project is a package.
+
+### Creating a package
+
+Create a reusable Dart package:
+
+```bash
+dart create -t package my_math_package
+```
+
+Example structure:
+
+```text
+my_math_package/
+  lib/
+    my_math_package.dart
+  test/
+    my_math_package_test.dart
+  pubspec.yaml
+  README.md
+```
+
+Add code:
+
+```dart
+// lib/my_math_package.dart
+int add(int a, int b) => a + b;
+```
+
+Test it:
+
+```dart
+// test/my_math_package_test.dart
+import 'package:test/test.dart';
+import 'package:my_math_package/my_math_package.dart';
+
+void main() {
+  test('add returns sum', () {
+    expect(add(2, 3), equals(5));
+  });
+}
+```
+
+### Connecting a local package
+
+During development, you can connect one local package to another using a path dependency.
+
+```text
+dart_workspace/
+  my_app/
+  my_math_package/
+```
+
+In `my_app/pubspec.yaml`:
+
+```yaml
+dependencies:
+  my_math_package:
+    path: ../my_math_package
+```
+
+Then run:
+
+```bash
+dart pub get
+```
+
+Use it in `my_app`:
+
+```dart
+import 'package:my_math_package/my_math_package.dart';
+
+void main() {
+  print(add(2, 3));
+}
+```
+
+Path dependencies are great for local development, but they are not suitable for publishing to pub.dev because other users do not have your local file path.
+
+### Connecting a remote package
+
+From pub.dev:
+
+```bash
+dart pub add http
+```
+
+This updates `pubspec.yaml`:
+
+```yaml
+dependencies:
+  http: ^1.0.0
+```
+
+Then import it:
+
+```dart
+import 'package:http/http.dart' as http;
+```
+
+From Git:
+
+```yaml
+dependencies:
+  my_math_package:
+    git:
+      url: https://github.com/example/my_math_package.git
+      ref: main
+```
+
+After changing `pubspec.yaml`, run:
+
+```bash
+dart pub get
+```
+
+---
+
+## Summary
 
 | Concept | Meaning |
 | :--- | :--- |
@@ -706,43 +1122,67 @@ void main() {
 | Optional positional parameters | Optional parameters written inside `[]` |
 | Named parameters | Parameters written inside `{}` and called by name |
 | `required` | Makes a named parameter required |
-| Default values | Values used when an argument is not provided |
 | Scope | Area where a variable is visible |
-| Function variable | A variable that stores a function |
 | Callback | A function passed to another function |
-| Type alias | A readable name for a complex type |
-| Anonymous function | Function without a name |
-| Arrow function | Short syntax for one-expression functions |
+| `typedef` | A readable name for a complex type |
 | Closure | Function that remembers variables from outer scope |
 | Recursion | Function calling itself |
 | Generator function | Function that produces a sequence of values |
-| `sync*` | Creates a synchronous generator that returns `Iterable<T>` |
-| `async*` | Creates an asynchronous generator that returns `Stream<T>` |
-| `yield` | Produces a value from a generator |
-| `yield*` | Delegates generation to another generator or iterable |
+| Library | A Dart file and its parts; a unit of privacy |
+| Package | A Dart project with `pubspec.yaml` |
+| `bin/` | Runnable app entry points |
+| `lib/` | Public package library code |
+| `lib/src/` | Internal implementation files |
+| `test/` | Automated tests |
+| `import` | Brings code from another library into current file |
+| `export` | Re-exports code as part of a public API |
+| `show` | Imports/exports only selected names |
+| `hide` | Imports/exports everything except selected names |
+| `deferred as` | Lazy-loads a library when needed |
+| `test()` | Defines one test case |
+| `expect()` | Checks actual result against expected matcher |
+| `group()` | Groups related tests |
+| `setUp()` | Runs before each test |
+| `tearDown()` | Runs after each test |
+| `skip` | Temporarily disables a test or group |
+| `tags` | Labels tests for filtering/configuration |
+| `onPlatform` | Applies platform-specific test configuration |
 
 ---
 
-## 🧠 Key Takeaways
+## Key Takeaways
 
 - Dart functions are objects.
 - Required positional parameters must be passed in the correct order.
 - Optional positional parameters use `[]`.
 - Named parameters use `{}`.
 - Named parameters are optional by default unless marked with `required`.
-- Default parameter values must be compile-time constants.
 - Functions can be assigned to variables and passed as arguments.
 - `typedef` makes complex function types easier to read.
-- Anonymous functions are useful for short callbacks.
-- Arrow functions are used for one-expression functions.
 - Closures can remember variables from outer scopes.
 - Recursion needs a base case.
 - Generator functions can produce values lazily using `yield`.
+- Every Dart file is a library.
+- Identifiers that start with `_` are library-private.
+- `lib/src/` is for internal implementation files.
+- Use `export` to create a clean public API.
+- Use `show` and `hide` to control imported/exported names.
+- Use `test`, `expect`, and matchers to verify behavior automatically.
+- Use `group` to organize tests.
+- Use `setUp` and `tearDown` when tests need shared preparation or cleanup.
+- Use `skip` only with a clear reason.
+- Use `tags` to run only selected groups of tests.
+- Use `onPlatform` for platform-specific skips or timeouts.
+- A package is connected to a project through `pubspec.yaml`.
 
 ---
 
-## 🔗 Useful References
+## Useful References
 
-- [Dart documentation — Functions](https://dart.dev/language/functions)
-- [Dart documentation — Typedefs](https://dart.dev/language/typedefs)
-- [Dart documentation — Creating streams](https://dart.dev/libraries/async/creating-streams)
+- [Dart documentation - Functions](https://dart.dev/language/functions)
+- [Dart documentation - Libraries and imports](https://dart.dev/language/libraries)
+- [Dart documentation - Package layout conventions](https://dart.dev/tools/pub/package-layout)
+- [Dart documentation - Package dependencies](https://dart.dev/tools/pub/dependencies)
+- [Dart documentation - dart create](https://dart.dev/tools/dart-create)
+- [Dart documentation - dart pub add](https://dart.dev/tools/pub/cmd/pub-add)
+- [package:test](https://pub.dev/packages/test)
